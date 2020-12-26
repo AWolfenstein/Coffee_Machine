@@ -21,10 +21,16 @@
     <ClCompile Include="swti\swti.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
+    <ClCompile Include="LogicFunctions.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="swti\swti.hpp">
       <Filter>Файлы ресурсов</Filter>
+    </ClInclude>
+    <ClInclude Include="LogicFunctions.h">
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

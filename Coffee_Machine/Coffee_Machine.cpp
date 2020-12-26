@@ -3,15 +3,28 @@
 
 #include <iostream>
 #include "swti/swti.hpp"
+#include "LogicFunctions.h"
 using namespace std;
+
 void headLogo();
-void balance(int byn);
-bool mainMenu();
+void balance(double byn);
+void coffeeMenu();
+void coffeeButtons();
+void layuout();
+void makingCoffee(int coffee);
+
+const string coffee[3] = { "Espresso", "Cappuccino",  "Latte" };
+const string cash[3] = { "1", "1.50",  "1.50" };
+
+const int minButtonCol = 5;
+const int maxButtonCol = 25;
+
+const int firstButtonRow = 9;
+const int twoButtonRow = 12;
+const int threeButtonRow = 15;
 
 void printVerticalLine(int x, int y) {
-
 	Cursor.printChar(x, y + 1, DLINE_V);
-
 };
 
 void printFrame(int x, int y, int columns, int rows)
@@ -44,13 +57,14 @@ int main()
 	Window.hideResize();
 	Window.hideBlinking();
 	Window.hideScrollbars();
+	Window.hideSelection();
 	Window.setTitle(L"EspressoBiancci LEI700");
 
-	Cursor.setColor(YELLOW);
-	printFrame(2, 0, 25, 23);
 
-	headLogo();
-	while (mainMenu()) {}
+	layuout();
+	testFunction();
+	coffeeMenu();
+
 	return 0;
 }
 
@@ -65,13 +79,13 @@ void headLogo() {
 	cout << "Biancci";
 }
 
-void balance(int byn) {
+void balance(double byn) {
 	Cursor.setColor(GREEN);
 	printFrame(4, 4, 21, 1);
 	Cursor.setPosition(6, 5);
 	Cursor.setColor(WHITE);
 	cout << "Balance: ";
-	Cursor.setPosition(18, 5);
+	Cursor.setPosition(15, 5);
 	Cursor.setColor(LIGHTCYAN);
 	cout << byn;//BYN
 	Cursor.setPosition(22, 5);
@@ -79,21 +93,94 @@ void balance(int byn) {
 	cout << "BYN";
 }
 
+void coffeeButtons() {
+	for (int i = 0; i <= 2; i++) {
+		int b = 1;
+		int space = 0;
 
-bool mainMenu() {
-	int rows = Window.getRows();
-	balance(999);
+		if (i != 0) {
+			b = 3;
+		}
 
+		if (cash[i].length() <= 1) {
+			space = 2;
+		}
+		else {
+			space = 0;
+		}
+
+		Cursor.setColor(LIGHTMAGENTA);
+		printFrame(4, 8 + i * b, 21, 1);
+		printVerticalLine(6, 8 + i * b);
+		printVerticalLine(17, 8 + i * b);
+		Cursor.setColor(GRAY);
+		Cursor.setPosition(5, 9 + i * b);
+		cout << i + 1;
+		Cursor.setColor(LIGHTYELLOW);
+		Cursor.setPosition(7, 9 + i * b);
+		cout << coffee[i];
+		Cursor.setColor(LIGHTCYAN);
+		Cursor.setPosition(18 + space, 9 + i * b);
+		cout << cash[i];
+		Cursor.setPosition(23, 9 + i * b);
+		Cursor.setColor(LIGHTYELLOW);
+		cout << "BYN";
+	}
+}
+
+void makingCoffee(int coffeeChoice) {
+	layuout();
+	Cursor.setColor(RED);
+	Cursor.setPosition(6, 5);
+	cout << "Making " << coffee[coffeeChoice];
+	Keyboard.waitUser();
+}
+
+bool coffeeInput() {
+	bool borderMouse = Mouse.getColumns() >= minButtonCol && Mouse.getColumns() <= maxButtonCol;
+	bool firstButtonPressed = Keyboard.getPressed(VK_LBUTTON) && borderMouse && (Mouse.getRows() == firstButtonRow || Mouse.getRows() == firstButtonRow + 1);
+	bool twoButtonPressed = Keyboard.getPressed(VK_LBUTTON) && borderMouse && (Mouse.getRows() == twoButtonRow || Mouse.getRows() == twoButtonRow + 1);
+	bool threeButtonPressed = Keyboard.getPressed(VK_LBUTTON) && borderMouse && (Mouse.getRows() == threeButtonRow || Mouse.getRows() == threeButtonRow + 1);
+
+	if (firstButtonPressed || Keyboard.getPressed('1')) {
+		makingCoffee(1);
+		return false;
+	}
+
+	if (twoButtonPressed || Keyboard.getPressed('2')) {
+		makingCoffee(2);
+		return false;
+	}
+
+	if (threeButtonPressed || Keyboard.getPressed('3')) {
+		makingCoffee(3);
+		return false;
+	}
+	return true;
+}
+void layuout() {
+	Cursor.clearScreen();
+	Cursor.setColor(YELLOW);
+	printFrame(2, 0, 25, 23);
+	headLogo();
+}
+
+void coffeeMenu() {
+	bool chosen = true;
+	balance(999.55);
 	Cursor.setColor(YELLOW);
 	printFrame(3, 7, 23, 15);
-
-	Cursor.setColor(WHITE);
-	printFrame(4, 8, 21, 1);
-	printVerticalLine(7, 8);
-	printVerticalLine(17, 8);
-	Keyboard.waitUser();
-	return false;
+	coffeeButtons();
+	//	Cursor.setPosition(7, 20);
+	//	cout << Mouse.getColumns() << "   " << Mouse.getRows() << "   ";
+	//	Keyboard.waitUser();
+	while (chosen)
+	{
+		chosen = coffeeInput();
+		Keyboard.wait(30);
+	}
 }
+
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
 // Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
