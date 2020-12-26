@@ -2,8 +2,12 @@
 //
 
 #include <iostream>
+#include <thread>
 #include "swti/swti.hpp"
+#include <windows.h>
+#include <stdio.h>
 #include "LogicFunctions.h"
+
 using namespace std;
 
 void headLogo();
@@ -13,8 +17,9 @@ void coffeeButtons();
 void layuout();
 void makingCoffee(int coffee);
 
-const string coffee[3] = { "Espresso", "Cappuccino",  "Latte" };
-const string cash[3] = { "1", "1.50",  "1.50" };
+
+const string coffee[5] = { "Input Money", "Espresso", "Cappuccino",  "Latte", "Service" };
+const string cash[5] = { "", "1", "1.50",  "1.50" ,"" };
 
 const int minButtonCol = 5;
 const int maxButtonCol = 25;
@@ -22,6 +27,10 @@ const int maxButtonCol = 25;
 const int firstButtonRow = 9;
 const int twoButtonRow = 12;
 const int threeButtonRow = 15;
+const int fourButtonRow = 18;
+const int fiveButtonRow = 21;
+
+int balanceNow = 0;
 
 void printVerticalLine(int x, int y) {
 	Cursor.printChar(x, y + 1, DLINE_V);
@@ -94,7 +103,7 @@ void balance(double byn) {
 }
 
 void coffeeButtons() {
-	for (int i = 0; i <= 2; i++) {
+	for (int i = 0; i <= 4; i++) {
 		int b = 1;
 		int space = 0;
 
@@ -112,19 +121,24 @@ void coffeeButtons() {
 		Cursor.setColor(LIGHTMAGENTA);
 		printFrame(4, 8 + i * b, 21, 1);
 		printVerticalLine(6, 8 + i * b);
-		printVerticalLine(17, 8 + i * b);
+
 		Cursor.setColor(GRAY);
 		Cursor.setPosition(5, 9 + i * b);
 		cout << i + 1;
 		Cursor.setColor(LIGHTYELLOW);
 		Cursor.setPosition(7, 9 + i * b);
 		cout << coffee[i];
-		Cursor.setColor(LIGHTCYAN);
-		Cursor.setPosition(18 + space, 9 + i * b);
-		cout << cash[i];
-		Cursor.setPosition(23, 9 + i * b);
-		Cursor.setColor(LIGHTYELLOW);
-		cout << "BYN";
+
+		if (i != 0 && i != 4) {
+			Cursor.setColor(LIGHTMAGENTA);
+			printVerticalLine(17, 8 + i * b);
+			Cursor.setColor(LIGHTCYAN);
+			Cursor.setPosition(18 + space, 9 + i * b);
+			cout << cash[i];
+			Cursor.setPosition(23, 9 + i * b);
+			Cursor.setColor(LIGHTYELLOW);
+			cout << "BYN";
+		}
 	}
 }
 
@@ -132,18 +146,60 @@ void makingCoffee(int coffeeChoice) {
 	layuout();
 	Cursor.setColor(RED);
 	Cursor.setPosition(6, 5);
-	cout << "Making " << coffee[coffeeChoice];
+	cout << "Making " << coffee[coffeeChoice - 1];
 	Keyboard.waitUser();
+	coffeeMenu();
 }
+void ClearConsoleInputBuffer()
+{
+	PINPUT_RECORD ClearingVar1 = new INPUT_RECORD[256];
+	DWORD ClearingVar2;
+	ReadConsoleInput(GetStdHandle(STD_INPUT_HANDLE), ClearingVar1, 256, &ClearingVar2);
+	delete[] ClearingVar1;
+}
+
+void inputingMoney() {
+	layuout();
+	Cursor.setColor(BLACK, BLACK);
+	int input = 0;
+	Cursor.setColor(GREEN);
+	printFrame(4, 4, 21, 2);
+	Cursor.setPosition(6, 5);
+	Cursor.setColor(WHITE);
+	cout << "Please input money: ";
+	Window.showBlinking();
+	Cursor.setColor(BLACK, WHITE);
+	for (int i = 6; i <= 24; i++)
+	{
+		Cursor.printBlank(i, 6);
+	}
+	Cursor.setPosition(6, 6);
+	ClearConsoleInputBuffer();
+	cin.clear();
+	fflush(stdin);
+
+	cin >> input;
+	balanceNow += input;
+
+	Cursor.setColor(BLACK, BLACK);
+	Window.hideBlinking();
+	Keyboard.waitUser();
+	coffeeMenu();
+}
+
 
 bool coffeeInput() {
 	bool borderMouse = Mouse.getColumns() >= minButtonCol && Mouse.getColumns() <= maxButtonCol;
 	bool firstButtonPressed = Keyboard.getPressed(VK_LBUTTON) && borderMouse && (Mouse.getRows() == firstButtonRow || Mouse.getRows() == firstButtonRow + 1);
 	bool twoButtonPressed = Keyboard.getPressed(VK_LBUTTON) && borderMouse && (Mouse.getRows() == twoButtonRow || Mouse.getRows() == twoButtonRow + 1);
 	bool threeButtonPressed = Keyboard.getPressed(VK_LBUTTON) && borderMouse && (Mouse.getRows() == threeButtonRow || Mouse.getRows() == threeButtonRow + 1);
+	bool fourButtonPressed = Keyboard.getPressed(VK_LBUTTON) && borderMouse && (Mouse.getRows() == fourButtonRow || Mouse.getRows() == fourButtonRow + 1);
+	bool fiveButtonPressed = Keyboard.getPressed(VK_LBUTTON) && borderMouse && (Mouse.getRows() == fiveButtonRow || Mouse.getRows() == fiveButtonRow + 1);
 
-	if (firstButtonPressed || Keyboard.getPressed('1')) {
-		makingCoffee(1);
+	if (firstButtonPressed || Keyboard.getReleased('1')) {
+		cin.clear();
+		fflush(stdin);
+		inputingMoney();
 		return false;
 	}
 
@@ -156,6 +212,16 @@ bool coffeeInput() {
 		makingCoffee(3);
 		return false;
 	}
+	if (fourButtonPressed || Keyboard.getPressed('4')) {
+		makingCoffee(4);
+		return false;
+	}
+
+	if (fiveButtonPressed || Keyboard.getPressed('5')) {
+		makingCoffee(5);
+		return false;
+	}
+
 	return true;
 }
 void layuout() {
@@ -166,11 +232,13 @@ void layuout() {
 }
 
 void coffeeMenu() {
+	layuout();
 	bool chosen = true;
-	balance(999.55);
+	balance(balanceNow);
 	Cursor.setColor(YELLOW);
 	printFrame(3, 7, 23, 15);
 	coffeeButtons();
+	Keyboard.wait(40);
 	//	Cursor.setPosition(7, 20);
 	//	cout << Mouse.getColumns() << "   " << Mouse.getRows() << "   ";
 	//	Keyboard.waitUser();
@@ -178,17 +246,9 @@ void coffeeMenu() {
 	{
 		chosen = coffeeInput();
 		Keyboard.wait(30);
+		cin.clear();
+		fflush(stdin);
 	}
 }
 
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
