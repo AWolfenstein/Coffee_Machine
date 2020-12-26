@@ -140,8 +140,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Coffee_Machine.cpp" />
+    <ClCompile Include="swti\swti.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="swti\swti.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>
