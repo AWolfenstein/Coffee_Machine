@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "swti/swti.hpp"
+
 using namespace std;
 
 void testFunction() {
@@ -41,24 +42,21 @@ double setMoney(double inputMoney) {
 		return inputMoney;
 	}
 }
-double missingAmount(double currentBalance, double coffeePrice) {
-	return coffeePrice - currentBalance;
-}
-void showMissingAmountError(double missingAmmount) {
-	cout << "Please deposit " << missingAmmount << "BYR" << endl;
-}
+
+
 bool isPaid(double currentBalance, double coffeePrice) {
 
 	if (currentBalance >= coffeePrice) {
 		return true;
 	}
 	else {
-		showMissingAmountError(missingAmount(currentBalance, coffeePrice));
 		return false;
 	}
 
 }
-
+double getPriceDifference(double currentBalance, double coffeePrice) {
+	return coffeePrice - currentBalance;
+}
 int setBlockMachine() {
 	return 1;
 }
@@ -66,8 +64,11 @@ double updateBalance(double inputMoney, double currentBalance) {
 	currentBalance += inputMoney;
 	return currentBalance;
 }
-bool isCorrectPassword(string inputPass) {
-	cout << inputPass;
-	return true;
+bool isCorrectPassword(string inputPass, string pin) {
+	return inputPass == pin;
 }
+int setEmptyCups(int emptyCups) {
+	return emptyCups;
+}
+
 //Test commit
