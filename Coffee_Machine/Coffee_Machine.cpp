@@ -211,6 +211,66 @@ void inputingMoney() {
 	coffeeMenu();
 }
 
+void inputingPin() {
+	layuout();
+	Cursor.setColor(BLACK, BLACK);
+
+	int input = 0;
+	char sym = '*';
+	string pin = "";
+	const int xStart = 13;
+	const int yStart = 7;
+
+	Cursor.setColor(RED);
+	printFrame(4, 4, 21, 3);
+
+	Cursor.setPosition(6, 5);
+	Cursor.setColor(WHITE);
+	cout << "Please input PIN: ";
+	Cursor.setColor(BLACK, WHITE);
+
+	for (int i = xStart - 1; i <= 18; i++)
+	{
+		Cursor.printBlank(i, yStart);
+	}
+
+	ClearConsoleInputBuffer();
+	Keyboard.wait(30);
+
+	while (!Keyboard.getReleased(VK_RETURN)) {
+		if (input < 4) {
+			if (Keyboard.getReleased('1') || Keyboard.getReleased(VK_NUMPAD1)) {
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				pin += "1";
+			}
+			if (Keyboard.getReleased('2') || Keyboard.getReleased(VK_NUMPAD2)) {
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				pin += "2";
+			}
+			if (Keyboard.getReleased('3') || Keyboard.getReleased(VK_NUMPAD3)) {
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				pin += "1";
+			}
+			if (Keyboard.getReleased('4') || Keyboard.getReleased(VK_NUMPAD4)) {
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				pin += "4";
+			}
+		}
+		if (Keyboard.getReleased(VK_BACK) && input != 0) {
+			Cursor.printBlank(xStart + input - 1, yStart);
+			input -= 1;
+			pin = pin.substr(0, pin.size() - 1);
+		}
+		Keyboard.wait(30);
+	}
+	Cursor.setColor(BLACK, BLACK);
+
+}
+
 
 bool coffeeInput() {
 	bool borderMouse = Mouse.getColumns() >= minButtonCol && Mouse.getColumns() <= maxButtonCol;
@@ -220,34 +280,35 @@ bool coffeeInput() {
 	bool fourButtonPressed = Keyboard.getPressed(VK_LBUTTON) && borderMouse && (Mouse.getRows() == fourButtonRow || Mouse.getRows() == fourButtonRow + 1);
 	bool fiveButtonPressed = Keyboard.getPressed(VK_LBUTTON) && borderMouse && (Mouse.getRows() == fiveButtonRow || Mouse.getRows() == fiveButtonRow + 1);
 
-	if (firstButtonPressed || Keyboard.getReleased('1')) {
+	if (firstButtonPressed || Keyboard.getReleased('1') || Keyboard.getReleased(VK_NUMPAD1)) {
 		cin.clear();
 		fflush(stdin);
 		inputingMoney();
 		return false;
 	}
 
-	if (twoButtonPressed || Keyboard.getPressed('2')) {
+	if (twoButtonPressed || Keyboard.getPressed('2') || Keyboard.getReleased(VK_NUMPAD2)) {
 		makingCoffee(2);
 		return false;
 	}
 
-	if (threeButtonPressed || Keyboard.getPressed('3')) {
+	if (threeButtonPressed || Keyboard.getPressed('3') || Keyboard.getReleased(VK_NUMPAD3)) {
 		makingCoffee(3);
 		return false;
 	}
-	if (fourButtonPressed || Keyboard.getPressed('4')) {
+	if (fourButtonPressed || Keyboard.getPressed('4') || Keyboard.getReleased(VK_NUMPAD4)) {
 		makingCoffee(4);
 		return false;
 	}
 
-	if (fiveButtonPressed || Keyboard.getPressed('5')) {
-		makingCoffee(5);
+	if (fiveButtonPressed || Keyboard.getPressed('5') || Keyboard.getReleased(VK_NUMPAD5)) {
+		inputingPin();
 		return false;
 	}
 
 	return true;
 }
+
 void layuout() {
 	Cursor.clearScreen();
 	Cursor.setColor(YELLOW);
