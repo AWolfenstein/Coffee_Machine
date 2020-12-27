@@ -200,8 +200,7 @@ void inputingMoney() {
 	fflush(stdin);
 
 	cin >> input;
-	
-	balanceNow += setMoney(input);
+	balanceNow += input;
 
 	Cursor.setColor(BLACK, BLACK);
 	Window.hideBlinking();
@@ -266,6 +265,7 @@ void inputingPin() {
 		Keyboard.wait(30);
 	}
 	Cursor.setColor(BLACK, BLACK);
+	//pin -string  pin -> false
 }
 
 
