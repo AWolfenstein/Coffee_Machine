@@ -284,6 +284,7 @@ void inputingMoney() {
 
 	balanceNow += stoi(input);
 
+
 	Cursor.setColor(BLACK, BLACK);
 	Window.hideBlinking();
 	Keyboard.waitUser();
