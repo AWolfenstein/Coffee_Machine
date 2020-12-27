@@ -38,20 +38,17 @@ void printVerticalLine(int x, int y) {
 
 void printFrame(int x, int y, int columns, int rows)
 {
-	// corners
 	Cursor.printChar(x, y, DLINE_UR);
 	Cursor.printChar(x, y + rows + 1, DLINE_DR);
 	Cursor.printChar(x + columns + 1, y, DLINE_UL);
 	Cursor.printChar(x + columns + 1, y + rows + 1, DLINE_DL);
 
-	// horizontal bars
 	for (int i = x + 1; i <= x + columns; i++)
 	{
 		Cursor.printChar(i, y, DLINE_H);
 		Cursor.printChar(i, y + rows + 1, DLINE_H);
 	}
 
-	// vertical bars
 	for (int i = y + 1; i <= y + rows; i++)
 	{
 		Cursor.printChar(x, i, DLINE_V);
