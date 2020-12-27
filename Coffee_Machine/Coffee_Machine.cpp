@@ -18,15 +18,33 @@
 using namespace std;
 
 void headLogo();
+void layuout(void firstFrame());
 void balance(double byn);
 void coffeeMenu();
-void coffeeButtons();
-void layuout();
+void userButtons(const string str[], int size, bool isCash);
+bool coffeeInput();
 void makingCoffee(int coffee);
+void serviceMenu();
+void allBalanceService();
+void allCupsService();
+bool serviceInput();
+void resetBalance();
+void errorMessange(string str, void retry());
+void headError();
+void warningMessange(string str, void continie());
+void headWarning();
 
+void inputingMoney();
+void inputingPin();
+
+void printVerticalLine(int x, int y);
+void printFrame(int x, int y, int columns, int rows);
+string inputKeybordString(int xStart, int yStart, bool isPin, int size);
+void ClearConsoleInputBuffer();
 
 const string coffee[5] = { "Input Money", "Espresso", "Cappuccino",  "Latte", "Service" };
 const string cash[5] = { "", "1", "1.50",  "1.50" ,"" };
+const string serviceButtons[3] = { "Add cups", "Revenue getting", "Back to Main Menu" };
 
 const int minButtonCol = 5;
 const int maxButtonCol = 25;
@@ -151,8 +169,7 @@ int main()
 	Window.hideSelection();
 	Window.setTitle(L"EspressoBiancci LEI700");
 
-
-	layuout();
+	layuout(headLogo);
 	testFunction();
 	coffeeMenu();
 
@@ -184,8 +201,8 @@ void balance(double byn) {
 	cout << "BYN";
 }
 
-void coffeeButtons() {
-	for (int i = 0; i <= 4; i++) {
+void userButtons(const string str[], int size, bool isCash) {
+	for (int i = 0; i <= size; i++) {
 		int b = 1;
 		int space = 0;
 
@@ -209,9 +226,9 @@ void coffeeButtons() {
 		cout << i + 1;
 		Cursor.setColor(LIGHTYELLOW);
 		Cursor.setPosition(7, 9 + i * b);
-		cout << coffee[i];
+		cout << str[i];
 
-		if (i != 0 && i != 4) {
+		if (isCash && i != 0 && i != size) {
 			Cursor.setColor(LIGHTMAGENTA);
 			printVerticalLine(17, 8 + i * b);
 			Cursor.setColor(LIGHTCYAN);
@@ -225,14 +242,18 @@ void coffeeButtons() {
 }
 
 void makingCoffee(int coffeeChoice) {
-	layuout();
+	layuout(headLogo);
+
 	int yLoader = 7;
 	double status = 0;
+
 	Cursor.setColor(RED);
 	Cursor.setPosition(6, 5);
 	cout << "Making " << coffee[coffeeChoice - 1];
+
 	Cursor.printChar(3, yLoader, '[', WHITE);
 	Cursor.printChar(27, yLoader, ']', WHITE);
+
 	for (int i = 0; i <= 22; i++) {
 		for (int b = 0; b <= 4; b++) {
 			Cursor.setPosition(13, yLoader);
@@ -244,10 +265,12 @@ void makingCoffee(int coffeeChoice) {
 		Cursor.printChar(4 + i, yLoader, SQUARE_M, WHITE);
 		Sleep(300);
 	}
-	layuout();
+
+	layuout(headLogo);
 	Cursor.setColor(LIGHTYELLOW);
 	Cursor.setPosition(4, 7);
 	cout << "Your " << coffee[coffeeChoice - 1] << " is ready.";
+
 	Cursor.setColor(RED);
 	Cursor.setPosition(7, 9);
 	cout << "Please get a cup!";
@@ -265,14 +288,16 @@ void ClearConsoleInputBuffer()
 }
 
 void inputingMoney() {
-	layuout();
+	layuout(headLogo);
+
 	Cursor.setColor(BLACK, BLACK);
 	Cursor.setColor(GREEN);
 	printFrame(4, 4, 21, 2);
+
 	Cursor.setPosition(6, 5);
 	Cursor.setColor(WHITE);
 	cout << "Please input money: ";
-	Window.showBlinking();
+
 	Cursor.setColor(BLACK, WHITE);
 	for (int i = 6; i <= 24; i++)
 	{
@@ -286,15 +311,12 @@ void inputingMoney() {
 
 
 	Cursor.setColor(BLACK, BLACK);
-	Window.hideBlinking();
 	Keyboard.waitUser();
 	coffeeMenu();
 }
 
-
-
 void inputingPin() {
-	layuout();
+	layuout(headLogo);
 	Cursor.setColor(BLACK, BLACK);
 	const int xStart = 13;
 	const int yStart = 7;
@@ -318,8 +340,8 @@ void inputingPin() {
 
 	Cursor.setColor(BLACK, BLACK);
 	//pin -string  pin -> false
+	serviceMenu();
 }
-
 
 bool coffeeInput() {
 	bool borderMouse = Mouse.getColumns() >= minButtonCol && Mouse.getColumns() <= maxButtonCol;
@@ -358,24 +380,23 @@ bool coffeeInput() {
 	return true;
 }
 
-void layuout() {
+void layuout(void firstFrame()) {
 	Cursor.clearScreen();
 	Cursor.setColor(YELLOW);
 	printFrame(2, 0, 25, 23);
-	headLogo();
+	firstFrame();
 }
 
 void coffeeMenu() {
-	layuout();
+	layuout(headLogo);
+
 	bool chosen = true;
+
 	balance(balanceNow);
 	Cursor.setColor(YELLOW);
 	printFrame(3, 7, 23, 15);
-	coffeeButtons();
+	userButtons(coffee, 4, true);
 	Keyboard.wait(40);
-	//	Cursor.setPosition(7, 20);
-	//	cout << Mouse.getColumns() << "   " << Mouse.getRows() << "   ";
-	//	Keyboard.waitUser();
 	while (chosen)
 	{
 		chosen = coffeeInput();
@@ -383,6 +404,169 @@ void coffeeMenu() {
 		cin.clear();
 		fflush(stdin);
 	}
+}
+
+void allBalanceService() {
+	Cursor.setPosition(3, 2);
+	Cursor.setColor(LIGHTYELLOW);
+	cout << "Balance is ";
+	Cursor.setPosition(15, 2);
+	Cursor.setColor(LIGHTCYAN);
+	cout << "99999";
+	Cursor.setPosition(22, 2);
+	Cursor.setColor(LIGHTYELLOW);
+	cout << "BYN.";
+}
+
+void allCupsService() {
+	Cursor.setPosition(3, 4);
+	Cursor.setColor(LIGHTYELLOW);
+	cout << "They are ";
+	Cursor.setPosition(12, 4);
+	Cursor.setColor(LIGHTCYAN);
+	cout << "999";//<-max 3 digit
+	Cursor.setPosition(16, 4);
+	Cursor.setColor(LIGHTYELLOW);
+	cout << "cups loaded.";
+}
+
+bool serviceInput() {
+	bool borderMouse = Mouse.getColumns() >= minButtonCol && Mouse.getColumns() <= maxButtonCol;
+	bool firstButtonPressed = Keyboard.getPressed(VK_LBUTTON) && borderMouse && (Mouse.getRows() == firstButtonRow || Mouse.getRows() == firstButtonRow + 1);
+	bool twoButtonPressed = Keyboard.getPressed(VK_LBUTTON) && borderMouse && (Mouse.getRows() == twoButtonRow || Mouse.getRows() == twoButtonRow + 1);
+	bool threeButtonPressed = Keyboard.getPressed(VK_LBUTTON) && borderMouse && (Mouse.getRows() == threeButtonRow || Mouse.getRows() == threeButtonRow + 1);
+
+	if (firstButtonPressed || Keyboard.getReleased('1') || Keyboard.getReleased(VK_NUMPAD1)) {
+		string str = "eeeffefdsfsffsfssfs1212121kkkkkkkkkkkk1212121last";
+		warningMessange(str, serviceMenu);
+		return false;
+	}
+
+	if (twoButtonPressed || Keyboard.getPressed('2') || Keyboard.getReleased(VK_NUMPAD2)) {
+		resetBalance();
+		return false;
+	}
+
+	if (threeButtonPressed || Keyboard.getPressed('3') || Keyboard.getReleased(VK_NUMPAD3)) {
+		coffeeMenu();
+		return false;
+	}
+
+	return true;
+}
+
+void serviceMenu() {
+	layuout(allBalanceService);
+
+	bool chosen = true;
+
+	allCupsService();
+	Cursor.setColor(YELLOW);
+	printFrame(3, 7, 23, 15);
+	userButtons(serviceButtons, 2, false);
+	Keyboard.wait(30);
+	while (chosen)
+	{
+		chosen = serviceInput();
+		Keyboard.wait(30);
+		cin.clear();
+		fflush(stdin);
+	}
+}
+
+void resetBalance() {
+	layuout(headLogo);
+	Cursor.setColor(LIGHTYELLOW);
+	Cursor.setPosition(4, 7);
+	cout << "Your revenue was ";
+	Cursor.setColor(LIGHTCYAN);
+	cout << "99999";
+	Cursor.setColor(RED);
+	Cursor.setPosition(4, 9);
+	cout << "Press any key to return";
+	Cursor.setPosition(8, 10);
+	cout << "to Service Menu";
+	Keyboard.waitUser();
+	serviceMenu();
+}
+
+void headError() {
+	Cursor.setColor(RED);
+	printFrame(4, 1, 21, 1);
+	Cursor.setPosition(12, 2);
+	Cursor.setColor(LIGHTRED);
+	cout << "Error!!!";
+}
+
+// usingErorrs
+//string str = "eeeffefdsfsffsfssfs1212121kkkkkkkkkkkk1212121last";
+//errorMessange(str, serviceMenu);
+void errorMessange(string str, void retry()) {
+	layuout(headError);
+	Cursor.setColor(RED);
+	if (str.length() > 21) {
+		int numOfLines = ceil(str.length() / 21);
+		int pos = 0;
+		for (int i = 0; i <= numOfLines; i++) {
+
+			Cursor.setPosition(5, 7 + i);
+			if (i != 0) {
+				pos += 21;
+			}
+			else {
+				pos = 0;
+			}
+			string newLine = str.substr(pos, 21);
+			cout << newLine;
+		}
+	}
+	else {
+		Cursor.setPosition(5, 7);
+		cout << str;
+	}
+	Cursor.setColor(LIGHTGREEN);
+	Cursor.setPosition(3, 20);
+	cout << "Press any key to continue";
+	Keyboard.waitUser();
+	retry();
+}
+
+void headWarning() {
+	Cursor.setColor(YELLOW);
+	printFrame(4, 1, 21, 1);
+	Cursor.setPosition(12, 2);
+	Cursor.setColor(LIGHTYELLOW);
+	cout << "Warning!";
+}
+
+void warningMessange(string str, void continie()) {
+	layuout(headWarning);
+	Cursor.setColor(LIGHTYELLOW);
+	if (str.length() > 21) {
+		int numOfLines = ceil(str.length() / 21);
+		int pos = 0;
+		for (int i = 0; i <= numOfLines; i++) {
+
+			Cursor.setPosition(5, 7 + i);
+			if (i != 0) {
+				pos += 21;
+			}
+			else {
+				pos = 0;
+			}
+			string newLine = str.substr(pos, 21);
+			cout << newLine;
+		}
+	}
+	else {
+		Cursor.setPosition(5, 7);
+		cout << str;
+	}
+	Cursor.setColor(LIGHTGREEN);
+	Cursor.setPosition(3, 20);
+	cout << "Press any key to continue";
+	Keyboard.waitUser();
+	continie();
 }
 
 
