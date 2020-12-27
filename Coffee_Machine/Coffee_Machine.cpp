@@ -4,8 +4,15 @@
 #include <iostream>
 #include <thread>
 #include "swti/swti.hpp"
-#include <windows.h>
+#include <iomanip>
+#include <stdlib.h>
 #include <stdio.h>
+#include <string>
+#include <Windows.h>
+#include <algorithm>
+#include <cctype>
+#include <cstddef> 
+#include <math.h>
 #include "LogicFunctions.h"
 
 using namespace std;
@@ -54,6 +61,84 @@ void printFrame(int x, int y, int columns, int rows)
 		Cursor.printChar(x, i, DLINE_V);
 		Cursor.printChar(x + columns + 1, i, DLINE_V);
 	}
+}
+
+string inputKeybordString(int xStart, int yStart, bool isPin, int size) {
+	int input = 0;
+	char sym;
+	string str = "";
+	while (!Keyboard.getReleased(VK_RETURN)) {
+		if (input < size) {
+			if (Keyboard.getReleased('0') || Keyboard.getReleased(VK_NUMPAD0)) {
+				isPin ? sym = '*' : sym = '0';
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				str += "0";
+			}
+			if (Keyboard.getReleased('1') || Keyboard.getReleased(VK_NUMPAD1)) {
+				isPin ? sym = '*' : sym = '1';
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				str += "1";
+			}
+			if (Keyboard.getReleased('2') || Keyboard.getReleased(VK_NUMPAD2)) {
+				isPin ? sym = '*' : sym = '2';
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				str += "2";
+			}
+			if (Keyboard.getReleased('3') || Keyboard.getReleased(VK_NUMPAD3)) {
+				isPin ? sym = '*' : sym = '3';
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				str += "1";
+			}
+			if (Keyboard.getReleased('4') || Keyboard.getReleased(VK_NUMPAD4)) {
+				isPin ? sym = '*' : sym = '4';
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				str += "4";
+			}
+			if (Keyboard.getReleased('5') || Keyboard.getReleased(VK_NUMPAD5)) {
+				isPin ? sym = '*' : sym = '5';
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				str += "5";
+			}
+			if (Keyboard.getReleased('6') || Keyboard.getReleased(VK_NUMPAD6)) {
+				isPin ? sym = '*' : sym = '6';
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				str += "6";
+			}
+			if (Keyboard.getReleased('7') || Keyboard.getReleased(VK_NUMPAD7)) {
+				isPin ? sym = '*' : sym = '7';
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				str += "7";
+			}
+			if (Keyboard.getReleased('8') || Keyboard.getReleased(VK_NUMPAD8)) {
+				isPin ? sym = '*' : sym = '8';
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				str += "8";
+			}
+			if (Keyboard.getReleased('9') || Keyboard.getReleased(VK_NUMPAD9)) {
+				isPin ? sym = '*' : sym = '9';
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				str += "9";
+			}
+
+		}
+		if (Keyboard.getReleased(VK_BACK) && input != 0) {
+			Cursor.printBlank(xStart + input - 1, yStart);
+			input -= 1;
+			str = str.substr(0, str.size() - 1);
+		}
+		Keyboard.wait(30);
+	}
+	return str;
 }
 
 int main()
@@ -182,7 +267,6 @@ void ClearConsoleInputBuffer()
 void inputingMoney() {
 	layuout();
 	Cursor.setColor(BLACK, BLACK);
-	int input = 0;
 	Cursor.setColor(GREEN);
 	printFrame(4, 4, 21, 2);
 	Cursor.setPosition(6, 5);
@@ -196,11 +280,9 @@ void inputingMoney() {
 	}
 	Cursor.setPosition(6, 6);
 	ClearConsoleInputBuffer();
-	cin.clear();
-	fflush(stdin);
+	string input = inputKeybordString(6, 6, false, 10);
 
-	cin >> input;
-	balanceNow += input;
+	balanceNow += stoi(input);
 
 	Cursor.setColor(BLACK, BLACK);
 	Window.hideBlinking();
@@ -208,13 +290,11 @@ void inputingMoney() {
 	coffeeMenu();
 }
 
+
+
 void inputingPin() {
 	layuout();
 	Cursor.setColor(BLACK, BLACK);
-
-	int input = 0;
-	char sym = '*';
-	string pin = "";
 	const int xStart = 13;
 	const int yStart = 7;
 
@@ -233,37 +313,8 @@ void inputingPin() {
 
 	ClearConsoleInputBuffer();
 	Keyboard.wait(30);
+	string pin = inputKeybordString(xStart, yStart, true, 4);
 
-	while (!Keyboard.getReleased(VK_RETURN)) {
-		if (input < 4) {
-			if (Keyboard.getReleased('1') || Keyboard.getReleased(VK_NUMPAD1)) {
-				Cursor.printChar(xStart + input, yStart, sym);
-				input += 1;
-				pin += "1";
-			}
-			if (Keyboard.getReleased('2') || Keyboard.getReleased(VK_NUMPAD2)) {
-				Cursor.printChar(xStart + input, yStart, sym);
-				input += 1;
-				pin += "2";
-			}
-			if (Keyboard.getReleased('3') || Keyboard.getReleased(VK_NUMPAD3)) {
-				Cursor.printChar(xStart + input, yStart, sym);
-				input += 1;
-				pin += "1";
-			}
-			if (Keyboard.getReleased('4') || Keyboard.getReleased(VK_NUMPAD4)) {
-				Cursor.printChar(xStart + input, yStart, sym);
-				input += 1;
-				pin += "4";
-			}
-		}
-		if (Keyboard.getReleased(VK_BACK) && input != 0) {
-			Cursor.printBlank(xStart + input - 1, yStart);
-			input -= 1;
-			pin = pin.substr(0, pin.size() - 1);
-		}
-		Keyboard.wait(30);
-	}
 	Cursor.setColor(BLACK, BLACK);
 	//pin -string  pin -> false
 }
