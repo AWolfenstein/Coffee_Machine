@@ -144,12 +144,36 @@ void coffeeButtons() {
 
 void makingCoffee(int coffeeChoice) {
 	layuout();
+	int yLoader = 7;
+	double status = 0;
 	Cursor.setColor(RED);
 	Cursor.setPosition(6, 5);
 	cout << "Making " << coffee[coffeeChoice - 1];
+	Cursor.printChar(3, yLoader, '[', WHITE);
+	Cursor.printChar(27, yLoader, ']', WHITE);
+	for (int i = 0; i <= 22; i++) {
+		for (int b = 0; b <= 4; b++) {
+			Cursor.setPosition(13, yLoader);
+			status += 0.867;
+			cout << ceil(status) << " %";
+			Sleep(80);
+
+		}
+		Cursor.printChar(4 + i, yLoader, SQUARE_M, WHITE);
+		Sleep(300);
+	}
+	layuout();
+	Cursor.setColor(LIGHTYELLOW);
+	Cursor.setPosition(4, 7);
+	cout << "Your " << coffee[coffeeChoice - 1] << " is ready.";
+	Cursor.setColor(RED);
+	Cursor.setPosition(7, 9);
+	cout << "Please get a cup!";
 	Keyboard.waitUser();
+
 	coffeeMenu();
 }
+
 void ClearConsoleInputBuffer()
 {
 	PINPUT_RECORD ClearingVar1 = new INPUT_RECORD[256];
