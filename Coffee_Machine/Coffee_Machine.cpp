@@ -268,7 +268,7 @@ void inputingPin() {
 		Keyboard.wait(30);
 	}
 	Cursor.setColor(BLACK, BLACK);
-
+	//pin -string  pin -> false
 }
 
 
