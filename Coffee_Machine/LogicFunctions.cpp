@@ -13,20 +13,25 @@ void testFunction() {
 double getBalance(double allCash) {
 	return allCash;
 }
+
 int getCountOfCups(int emptyCups) {
 	return emptyCups;
 }
+
 int decreaseCupFromCoffeeMachine(int emptyCups) {
 	emptyCups--;
 	return emptyCups;
 }
+
 double getMoney(double currentBalance, double allCash) {
 	currentBalance = 0;
 	return allCash;
 }
+
 void showMoneyLessInput() {
 	cout << "The denomination of this bill is less than the allowed" << endl;
 }
+
 bool isCorrectInputMoney(double inputMoney) {
 	if (inputMoney < 1) {
 		showMoneyLessInput();
@@ -37,12 +42,12 @@ bool isCorrectInputMoney(double inputMoney) {
 	}
 
 }
+
 double setMoney(double inputMoney) {
 	if (isCorrectInputMoney(inputMoney) == true) {
 		return inputMoney;
 	}
 }
-
 
 bool isPaid(double currentBalance, double coffeePrice) {
 
@@ -54,19 +59,24 @@ bool isPaid(double currentBalance, double coffeePrice) {
 	}
 
 }
+
 double getPriceDifference(double currentBalance, double coffeePrice) {
 	return coffeePrice - currentBalance;
 }
+
 int setBlockMachine() {
 	return 1;
 }
+
 double updateBalance(double inputMoney, double currentBalance) {
 	currentBalance += inputMoney;
 	return currentBalance;
 }
+
 bool isCorrectPassword(string inputPass, string pin) {
 	return inputPass == pin;
 }
+
 int setEmptyCups(int emptyCups) {
 	return emptyCups;
 }
