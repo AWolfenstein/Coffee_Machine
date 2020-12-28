@@ -119,6 +119,11 @@ string inputKeybordString(int xStart, int yStart, bool isPin, int size) {
 	return str;
 }
 
+
+
+string showDifference(double currentBalance, double price);
+void makePaymentAndPrepeareEmptyCups(double price);
+
 int main()
 {
 	Cursor.setFontPixels(15, 20);
@@ -330,17 +335,16 @@ bool coffeeInput() {
 	if (twoButtonPressed || isKeybordPressed(2, VK_NUMPAD2)) {
 		if (isPaid(balanceNow, stod(cash[1])))
 		{
-			balanceNow -= stod(cash[1]);
-			emptyCups = decreaseCupFromCoffeeMachine(emptyCups);
+			//balanceNow -= stod(cash[1]);
+			//emptyCups = decreaseCupFromCoffeeMachine(emptyCups);
+			makePaymentAndPrepeareEmptyCups(stod(cash[1]));
 			makingCoffee(2);
 
 		}
 		else
 		{
-			string warningMessageString = "Please deposit ";
-			string differrence = to_string(getPriceDifference(balanceNow, stod(cash[1])));
-			string resultString = "Please deposit " + differrence + " BYR";
-			userMessange(resultString, inputingMoney, WARNINGM);
+			userMessange(showDifference(balanceNow, stod(cash[2])), inputingMoney, WARNINGM);
+
 		}
 		return false;
 	}
@@ -348,33 +352,25 @@ bool coffeeInput() {
 	if (threeButtonPressed || isKeybordPressed(3, VK_NUMPAD3)) {
 		if (isPaid(balanceNow, stod(cash[2])))
 		{
-			balanceNow -= stod(cash[2]);
-			emptyCups = decreaseCupFromCoffeeMachine(emptyCups);
+			makePaymentAndPrepeareEmptyCups(stod(cash[2]));
 			makingCoffee(3);
 		}
 		else
 		{
-			string warningMessageString = "Please deposit ";
-			string differrence = to_string(getPriceDifference(balanceNow, stod(cash[2])));
-			string resultString = "Please deposit " + differrence + " BYR";
-			userMessange(resultString, inputingMoney, WARNINGM);
+			userMessange(showDifference(balanceNow, stod(cash[3])), inputingMoney, WARNINGM);
 		}
 		return false;
 	}
 	if (fourButtonPressed || isKeybordPressed(4, VK_NUMPAD4)) {
 		if (isPaid(balanceNow, stod(cash[3])))
 		{
-			balanceNow -= stod(cash[3]);
-			emptyCups = decreaseCupFromCoffeeMachine(emptyCups);
+			makePaymentAndPrepeareEmptyCups(stod(cash[3]));
 			makingCoffee(4);
 
 		}
 		else
 		{
-			string warningMessageString = "Please deposit ";
-			string differrence = to_string(getPriceDifference(balanceNow, stod(cash[3])));
-			string resultString = "Please deposit " + differrence + " BYR";
-			userMessange(resultString, inputingMoney, WARNINGM);
+			userMessange(showDifference(balanceNow, stod(cash[3])), inputingMoney, WARNINGM);
 		}
 		return false;
 	}
@@ -626,3 +622,14 @@ void block() {
 	}
 }
 
+string showDifference(double currentBalance, double price) {
+	string warningMessageString = "Please deposit ";
+	string differrence = to_string(getPriceDifference(currentBalance, price));
+	string resultString = "Please deposit " + differrence + " BYR";
+	return resultString;
+}
+
+void makePaymentAndPrepeareEmptyCups(double price) {
+	balanceNow -= price;
+	emptyCups = decreaseCupFromCoffeeMachine(emptyCups);
+}
