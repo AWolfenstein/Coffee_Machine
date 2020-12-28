@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cstddef> 
+#include <conio.h>
 #include <math.h>
 #include "LogicFunctions.h"
 
@@ -46,11 +47,13 @@ void printVerticalLine(int x, int y);
 void printFrame(int x, int y, int columns, int rows);
 string inputKeybordString(int xStart, int yStart, bool isPin, int size);
 void ClearConsoleInputBuffer();
+
 enum TypesHead { LOGO, WARNINGM, ERRORM, BALANCEM };
+
 const string coffee[5] = { "Input Money", "Espresso", "Cappuccino",  "Latte", "Service" };
 const string cash[5] = { "", "1", "1.50",  "1.50" ,"" };
 const string serviceButtons[3] = { "Add cups", "Revenue getting", "Back to Main Menu" };
-
+const int numPadKeys[10] = { VK_NUMPAD0,VK_NUMPAD1,VK_NUMPAD2,VK_NUMPAD3,VK_NUMPAD4,VK_NUMPAD5,VK_NUMPAD6,VK_NUMPAD7,VK_NUMPAD8,VK_NUMPAD9 };
 const int minButtonCol = 5;
 const int maxButtonCol = 25;
 
@@ -93,75 +96,23 @@ string inputKeybordString(int xStart, int yStart, bool isPin, int size) {
 	int input = 0;
 	char sym;
 	string str = "";
-
+	Keyboard.wait(30);
 	while (!Keyboard.getPressed(VK_RETURN)) {
-		if (input < size) {
-			if (Keyboard.getReleased('0') || Keyboard.getReleased(VK_NUMPAD0)) {
-				isPin ? sym = '*' : sym = '0';
-				Cursor.printChar(xStart + input, yStart, sym);
-				input += 1;
-				str += "0";
-			}
-			if (Keyboard.getReleased('1') || Keyboard.getReleased(VK_NUMPAD1)) {
-				isPin ? sym = '*' : sym = '1';
-				Cursor.printChar(xStart + input, yStart, sym);
-				input += 1;
-				str += "1";
-			}
-			if (Keyboard.getReleased('2') || Keyboard.getReleased(VK_NUMPAD2)) {
-				isPin ? sym = '*' : sym = '2';
-				Cursor.printChar(xStart + input, yStart, sym);
-				input += 1;
-				str += "2";
-			}
-			if (Keyboard.getReleased('3') || Keyboard.getReleased(VK_NUMPAD3)) {
-				isPin ? sym = '*' : sym = '3';
-				Cursor.printChar(xStart + input, yStart, sym);
-				input += 1;
-				str += "3";
-			}
-			if (Keyboard.getReleased('4') || Keyboard.getReleased(VK_NUMPAD4)) {
-				isPin ? sym = '*' : sym = '4';
-				Cursor.printChar(xStart + input, yStart, sym);
-				input += 1;
-				str += "4";
-			}
-			if (Keyboard.getReleased('5') || Keyboard.getReleased(VK_NUMPAD5)) {
-				isPin ? sym = '*' : sym = '5';
-				Cursor.printChar(xStart + input, yStart, sym);
-				input += 1;
-				str += "5";
-			}
-			if (Keyboard.getReleased('6') || Keyboard.getReleased(VK_NUMPAD6)) {
-				isPin ? sym = '*' : sym = '6';
-				Cursor.printChar(xStart + input, yStart, sym);
-				input += 1;
-				str += "6";
-			}
-			if (Keyboard.getReleased('7') || Keyboard.getReleased(VK_NUMPAD7)) {
-				isPin ? sym = '*' : sym = '7';
-				Cursor.printChar(xStart + input, yStart, sym);
-				input += 1;
-				str += "7";
-			}
-			if (Keyboard.getReleased('8') || Keyboard.getReleased(VK_NUMPAD8)) {
-				isPin ? sym = '*' : sym = '8';
-				Cursor.printChar(xStart + input, yStart, sym);
-				input += 1;
-				str += "8";
-			}
-			if (Keyboard.getReleased('9') || Keyboard.getReleased(VK_NUMPAD9)) {
-				isPin ? sym = '*' : sym = '9';
-				Cursor.printChar(xStart + input, yStart, sym);
-				input += 1;
-				str += "9";
-			}
 
-		}
-		if (Keyboard.getReleased(VK_BACK) && input != 0) {
+		if (Keyboard.get(VK_BACK) && input != 0) {
 			Cursor.printBlank(xStart + input - 1, yStart);
 			input -= 1;
 			str = str.substr(0, str.size() - 1);
+		}
+		if (input < size) {
+			char key = _getch();
+			int i = key - '0';
+			if (i >= 0 && i <= 9) {
+				isPin ? sym = '*' : sym = i + '0';
+				Cursor.printChar(xStart + input, yStart, sym);
+				input += 1;
+				str += to_string(i);
+			}
 		}
 		Keyboard.wait(30);
 	}
@@ -437,8 +388,6 @@ bool coffeeInput() {
 	return true;
 }
 
-
-
 void coffeeMenu() {
 	if (emptyCups == 0) {
 		userMessange("We are very sorry, but unfortunately there are no cups left", inputingPin, ERRORM);
@@ -490,6 +439,7 @@ void allCupsService() {
 bool isKeybordPressed(int oneKey, int twoKey) {
 	return Keyboard.getReleased(oneKey) || Keyboard.getReleased(twoKey);
 }
+
 bool serviceInput() {
 	bool firstButtonPressed = isPressedButton(firstButtonRow);
 	bool twoButtonPressed = isPressedButton(twoButtonRow);
