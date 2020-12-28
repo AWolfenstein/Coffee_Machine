@@ -33,6 +33,8 @@ void errorMessange(string str, void retry());
 void headError();
 void warningMessange(string str, void continie());     //warningMessage       
 void headWarning();
+void block();
+void addingCups();
 
 void inputingMoney();
 void inputingPin();
@@ -88,7 +90,7 @@ string inputKeybordString(int xStart, int yStart, bool isPin, int size) {
 	int input = 0;
 	char sym;
 	string str = "";
-	while (!Keyboard.getReleased(VK_RETURN)) {
+	while (!Keyboard.getPressed(VK_RETURN)) {
 		if (input < size) {
 			if (Keyboard.getReleased('0') || Keyboard.getReleased(VK_NUMPAD0)) {
 				isPin ? sym = '*' : sym = '0';
@@ -112,7 +114,7 @@ string inputKeybordString(int xStart, int yStart, bool isPin, int size) {
 				isPin ? sym = '*' : sym = '3';
 				Cursor.printChar(xStart + input, yStart, sym);
 				input += 1;
-				str += "1";
+				str += "3";
 			}
 			if (Keyboard.getReleased('4') || Keyboard.getReleased(VK_NUMPAD4)) {
 				isPin ? sym = '*' : sym = '4';
@@ -339,7 +341,7 @@ void inputingPin() {
 	}
 
 	ClearConsoleInputBuffer();
-	Keyboard.wait(30);
+	Keyboard.wait(70);
 	string pin = inputKeybordString(xStart, yStart, true, 4);
 
 	Cursor.setColor(BLACK, BLACK);
@@ -354,7 +356,7 @@ void inputingPin() {
 		}
 	}
 	else {
-		errorMessange("Coffee machine has been blocked", coffeeMenu);
+		errorMessange("Coffee machine has been blocked", block);
 	}
 
 
@@ -399,7 +401,6 @@ bool coffeeInput() {
 			balanceNow -= stod(cash[2]);
 			emptyCups = decreaseCupFromCoffeeMachine(emptyCups);
 			makingCoffee(3);
-
 		}
 		else
 		{
@@ -431,8 +432,6 @@ bool coffeeInput() {
 	if (fiveButtonPressed || Keyboard.getPressed('5') || Keyboard.getReleased(VK_NUMPAD5)) {
 
 		inputingPin();
-
-
 		return false;
 	}
 
@@ -499,17 +498,13 @@ bool serviceInput() {
 	bool threeButtonPressed = Keyboard.getPressed(VK_LBUTTON) && borderMouse && (Mouse.getRows() == threeButtonRow || Mouse.getRows() == threeButtonRow + 1);
 
 	if (firstButtonPressed || Keyboard.getReleased('1') || Keyboard.getReleased(VK_NUMPAD1)) {
-		emptyCups += setEmptyCups(7);
-		warningMessange("You have add 7 cups", serviceMenu);
+
+		addingCups();
 		return false;
 	}
 
 	if (twoButtonPressed || Keyboard.getPressed('2') || Keyboard.getReleased(VK_NUMPAD2)) {
-		string revenueString = to_string(revenue);
-		balanceNow = 0;
-		revenue = 0;
-		warningMessange(revenueString + " were given away", serviceMenu);
-
+		resetBalance();
 		return false;
 	}
 
@@ -542,17 +537,41 @@ void serviceMenu() {
 
 void resetBalance() {
 	layuout(headLogo);
+	string revenueString = to_string(revenue);
 	Cursor.setColor(LIGHTYELLOW);
-	Cursor.setPosition(4, 7);
+	Cursor.setPosition(7, 7);
 	cout << "Your revenue was ";
+	Cursor.setPosition(7, 9);
 	Cursor.setColor(LIGHTCYAN);
-	cout << "99999"; ///////////
+	cout << revenueString; ///////////
+	Cursor.setColor(LIGHTYELLOW);
+	Cursor.setPosition(16, 9);
+	cout << "BYN";
 	Cursor.setColor(RED);
-	Cursor.setPosition(4, 9);
+	Cursor.setPosition(4, 11);
 	cout << "Press any key to return";
-	Cursor.setPosition(8, 10);
+	Cursor.setPosition(8, 12);
 	cout << "to Service Menu";
 	Keyboard.waitUser();
+	balanceNow = 0;
+	revenue = 0;
+	serviceMenu();
+}
+
+void addingCups() {
+	layuout(headLogo);
+	emptyCups += setEmptyCups(7);
+	Cursor.setColor(LIGHTYELLOW);
+	Cursor.setPosition(6, 7);
+	cout << "You have add 7 cups";
+	Cursor.setColor(RED);
+	Cursor.setPosition(4, 11);
+	cout << "Press any key to return";
+	Cursor.setPosition(8, 12);
+	cout << "to Service Menu";
+	Keyboard.waitUser();
+	balanceNow = 0;
+	revenue = 0;
 	serviceMenu();
 }
 
@@ -612,7 +631,6 @@ void warningMessange(string str, void continie()) {
 		int numOfLines = ceil(str.length() / 21);
 		int pos = 0;
 		for (int i = 0; i <= numOfLines; i++) {
-
 			Cursor.setPosition(5, 7 + i);
 			if (i != 0) {
 				pos += 21;
@@ -635,4 +653,18 @@ void warningMessange(string str, void continie()) {
 	continie();
 }
 
-
+void block() {
+	layuout(headLogo);
+	Cursor.setColor(RED);
+	Cursor.setPosition(7, 7);
+	cout << "Coffee machine has ";
+	Cursor.setPosition(9, 8);
+	cout << " been blocked";
+	Cursor.setPosition(12, 10);
+	Cursor.setColor(LIGHTCYAN);
+	cout << "Sorry!!"; ///////////
+	while (!Keyboard.getPressed(VK_ESCAPE)) {
+		Keyboard.waitUser();
+		block();
+	}
+}
