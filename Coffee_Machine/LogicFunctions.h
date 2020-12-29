@@ -22,3 +22,7 @@ bool isPaid(double currentBalance, double coffeePrice);
 bool isCorrectPassword(string inputPass, string pin);
 
 int setBlockMachine();
+
+
+
+string showDifference(double currentBalance, double price);

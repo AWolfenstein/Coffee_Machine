@@ -81,4 +81,15 @@ int setEmptyCups(int emptyCups) {
 	return emptyCups;
 }
 
+
+string showDifference(double currentBalance, double price) {
+	string warningMessageString = "Please deposit ";
+	string differrence = to_string(getPriceDifference(currentBalance, price));
+	string resultString = "Please deposit " + differrence + " BYR";
+	return resultString;
+}
+
+
+
+
 //Test commit
