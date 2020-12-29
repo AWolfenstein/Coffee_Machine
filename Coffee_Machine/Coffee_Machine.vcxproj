@@ -140,12 +140,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Coffee_Machine.cpp" />
+    <ClCompile Include="Components.cpp" />
     <ClCompile Include="LogicFunctions.cpp" />
     <ClCompile Include="swti\swti.cpp" />
+    <ClCompile Include="UIFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Components.h" />
+    <ClInclude Include="ConstantsAndStrings.h" />
     <ClInclude Include="LogicFunctions.h" />
     <ClInclude Include="swti\swti.hpp" />
+    <ClInclude Include="UIFunctions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
