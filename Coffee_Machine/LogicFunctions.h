@@ -26,3 +26,4 @@ int setBlockMachine();
 
 
 string showDifference(double currentBalance, double price);
+string getNonEmptyString(string str);

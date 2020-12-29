@@ -261,7 +261,7 @@ void inputingMoney() {
 	Cursor.setPosition(6, 6);
 	ClearConsoleInputBuffer();
 	string input = inputKeybordString(6, 6, false, 10);
-	balanceNow += setMoney(stod(input));
+	balanceNow += setMoney(stod(getNonEmptyString(input)));
 	revenue += balanceNow;
 
 	Cursor.setColor(BLACK, BLACK);
@@ -289,7 +289,7 @@ void inputingCups() {
 	Cursor.setPosition(6, 6);
 	ClearConsoleInputBuffer();
 	string input = inputKeybordString(6, 6, false, 10);
-	emptyCups += setEmptyCups(stoi(input));
+	emptyCups += setEmptyCups(stoi(getNonEmptyString(input)));
 	Cursor.setColor(BLACK, BLACK);
 	Keyboard.waitUser();
 	serviceMenu();

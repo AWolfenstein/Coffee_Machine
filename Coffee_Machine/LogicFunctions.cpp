@@ -88,8 +88,13 @@ string showDifference(double currentBalance, double price) {
 	string resultString = "Please deposit " + differrence + " BYR";
 	return resultString;
 }
-
-
-
+string getNonEmptyString(string str) {
+	if (str == "") {
+		return "0";
+	}
+	else {
+		return str;
+	}
+}
 
 //Test commit
