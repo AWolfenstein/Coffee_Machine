@@ -19,7 +19,6 @@
 
 using namespace std;
 
-//print EspressoBinacci
 void layuout(int type);    //logo || 
 void balance(double byn);
 void coffeeMenu();
@@ -32,13 +31,14 @@ void allCupsService();
 bool serviceInput();
 void resetBalance();
 void userMessange(string str, void retry(), int type);
-
+string showDifference(double currentBalance, double price);
+void makePaymentAndPrepeareEmptyCups(double price);
 
 void headLogoT(int type);
 void block();
 void addingCups();
 bool isPressedButton(const int buttonRow);
-bool isKeybordPressed(int oneKey, int twoKey);
+bool isKeybordPressed(int Key);
 
 void inputingMoney();
 void inputingPin();
@@ -119,11 +119,6 @@ string inputKeybordString(int xStart, int yStart, bool isPin, int size) {
 	return str;
 }
 
-
-
-string showDifference(double currentBalance, double price);
-void makePaymentAndPrepeareEmptyCups(double price);
-
 int main()
 {
 	Cursor.setFontPixels(15, 20);
@@ -140,8 +135,6 @@ int main()
 
 	return 0;
 }
-
-
 
 void balance(double byn) {
 	Cursor.setColor(GREEN);
@@ -325,31 +318,27 @@ bool coffeeInput() {
 	bool fourButtonPressed = isPressedButton(fourButtonRow);
 	bool fiveButtonPressed = isPressedButton(fiveButtonRow);
 
-	if (firstButtonPressed || isKeybordPressed(1, VK_NUMPAD1)) {
+	if (firstButtonPressed || isKeybordPressed(1)) {
 		cin.clear();
 		fflush(stdin);
 		userMessange("Pay attention that the coffee machine doesn't give change! ", inputingMoney, WARNINGM);
 		return false;
 	}
 
-	if (twoButtonPressed || isKeybordPressed(2, VK_NUMPAD2)) {
+	if (twoButtonPressed || isKeybordPressed(2)) {
 		if (isPaid(balanceNow, stod(cash[1])))
 		{
-			//balanceNow -= stod(cash[1]);
-			//emptyCups = decreaseCupFromCoffeeMachine(emptyCups);
 			makePaymentAndPrepeareEmptyCups(stod(cash[1]));
 			makingCoffee(2);
-
 		}
 		else
 		{
 			userMessange(showDifference(balanceNow, stod(cash[2])), inputingMoney, WARNINGM);
-
 		}
 		return false;
 	}
 
-	if (threeButtonPressed || isKeybordPressed(3, VK_NUMPAD3)) {
+	if (threeButtonPressed || isKeybordPressed(3)) {
 		if (isPaid(balanceNow, stod(cash[2])))
 		{
 			makePaymentAndPrepeareEmptyCups(stod(cash[2]));
@@ -361,7 +350,7 @@ bool coffeeInput() {
 		}
 		return false;
 	}
-	if (fourButtonPressed || isKeybordPressed(4, VK_NUMPAD4)) {
+	if (fourButtonPressed || isKeybordPressed(4)) {
 		if (isPaid(balanceNow, stod(cash[3])))
 		{
 			makePaymentAndPrepeareEmptyCups(stod(cash[3]));
@@ -375,7 +364,7 @@ bool coffeeInput() {
 		return false;
 	}
 
-	if (fiveButtonPressed || isKeybordPressed(5, VK_NUMPAD5)) {
+	if (fiveButtonPressed || isKeybordPressed(5)) {
 
 		inputingPin();
 		return false;
@@ -432,8 +421,8 @@ void allCupsService() {
 	cout << "cups loaded.";
 }
 
-bool isKeybordPressed(int oneKey, int twoKey) {
-	return Keyboard.getReleased(oneKey) || Keyboard.getReleased(twoKey);
+bool isKeybordPressed(int Key) {
+	return (Keyboard.getReleased(Key + '0') || Keyboard.getReleased(numPadKeys[Key]));
 }
 
 bool serviceInput() {
@@ -441,18 +430,18 @@ bool serviceInput() {
 	bool twoButtonPressed = isPressedButton(twoButtonRow);
 	bool threeButtonPressed = isPressedButton(threeButtonRow);
 
-	if (firstButtonPressed || isKeybordPressed(1, VK_NUMPAD1)) {
+	if (firstButtonPressed || isKeybordPressed(1)) {
 
 		addingCups();
 		return false;
 	}
 
-	if (twoButtonPressed || isKeybordPressed(2, VK_NUMPAD2)) {
+	if (twoButtonPressed || isKeybordPressed(2)) {
 		resetBalance();
 		return false;
 	}
 
-	if (threeButtonPressed || isKeybordPressed(3, VK_NUMPAD3)) {
+	if (threeButtonPressed || isKeybordPressed(3)) {
 		coffeeMenu();
 		return false;
 	}
@@ -515,8 +504,6 @@ void addingCups() {
 	Cursor.setPosition(8, 12);
 	cout << "to Service Menu";
 	Keyboard.waitUser();
-	balanceNow = 0;
-	revenue = 0;
 	serviceMenu();
 }
 void layuout(int type) {
@@ -530,7 +517,7 @@ void headLogoT(int type) {
 	Color colorFrame;
 	Color colorText;
 	string text;
-	int x;
+	int x = 0;
 	int y = 2;
 	switch (type)
 	{
@@ -615,7 +602,7 @@ void block() {
 	cout << " been blocked";
 	Cursor.setPosition(12, 10);
 	Cursor.setColor(LIGHTCYAN);
-	cout << "Sorry!!"; ///////////
+	cout << "Sorry!!";
 	while (!Keyboard.getPressed(VK_ESCAPE)) {
 		Keyboard.waitUser();
 		block();
