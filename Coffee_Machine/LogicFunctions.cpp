@@ -33,7 +33,7 @@ void showMoneyLessInput() {
 }
 
 bool isCorrectInputMoney(double inputMoney) {
-	if (inputMoney < 1) {
+	if (inputMoney > 2 && 0.10 < inputMoney) {
 		showMoneyLessInput();
 		return false;
 	}
