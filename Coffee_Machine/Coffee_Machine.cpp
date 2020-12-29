@@ -119,6 +119,9 @@ string inputKeybordString(int xStart, int yStart, bool isPin, int size) {
 	return str;
 }
 
+
+void makePaymentAndPrepeareEmptyCups(double price);
+void inputingCups();
 int main()
 {
 	Cursor.setFontPixels(15, 20);
@@ -132,7 +135,6 @@ int main()
 	layuout(LOGO);
 	testFunction();
 	coffeeMenu();
-
 	return 0;
 }
 
@@ -257,13 +259,40 @@ void inputingMoney() {
 	Cursor.setPosition(6, 6);
 	ClearConsoleInputBuffer();
 	string input = inputKeybordString(6, 6, false, 10);
-	balanceNow += setMoney(stod(input));
+	balanceNow += setMoney(stod(getNonEmptyString(input)));
 	revenue += balanceNow;
 
 	Cursor.setColor(BLACK, BLACK);
 	Keyboard.waitUser();
 	coffeeMenu();
 }
+
+
+void inputingCups() {
+	layuout(LOGO);
+
+	Cursor.setColor(BLACK, BLACK);
+	Cursor.setColor(GREEN);
+	printFrame(4, 4, 21, 2);
+
+	Cursor.setPosition(6, 5);
+	Cursor.setColor(WHITE);
+	cout << "Add empty cups: ";
+
+	Cursor.setColor(BLACK, WHITE);
+	for (int i = 6; i <= 24; i++)
+	{
+		Cursor.printBlank(i, 6);
+	}
+	Cursor.setPosition(6, 6);
+	ClearConsoleInputBuffer();
+	string input = inputKeybordString(6, 6, false, 10);
+	emptyCups += setEmptyCups(stoi(getNonEmptyString(input)));
+	Cursor.setColor(BLACK, BLACK);
+	Keyboard.waitUser();
+	serviceMenu();
+}
+
 
 void inputingPin() {
 	layuout(LOGO);
@@ -494,10 +523,10 @@ void resetBalance() {
 
 void addingCups() {
 	layuout(LOGO);
-	emptyCups += setEmptyCups(7);
+	inputingCups();
 	Cursor.setColor(LIGHTYELLOW);
 	Cursor.setPosition(6, 7);
-	cout << "You have add 7 cups";
+	cout << emptyCups;
 	Cursor.setColor(RED);
 	Cursor.setPosition(4, 11);
 	cout << "Press any key to return";
@@ -609,14 +638,8 @@ void block() {
 	}
 }
 
-string showDifference(double currentBalance, double price) {
-	string warningMessageString = "Please deposit ";
-	string differrence = to_string(getPriceDifference(currentBalance, price));
-	string resultString = "Please deposit " + differrence + " BYR";
-	return resultString;
-}
-
 void makePaymentAndPrepeareEmptyCups(double price) {
 	balanceNow -= price;
 	emptyCups = decreaseCupFromCoffeeMachine(emptyCups);
+
 }
