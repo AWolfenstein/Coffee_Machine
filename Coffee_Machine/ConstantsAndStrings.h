@@ -17,6 +17,8 @@
 #define PIXEL_SIZE_Y  20
 #define WINDOW_TITLE L"EspressoBiancci LEI700"
 #define START_CUPS 7
+#define INPUT_PINT_TRIES 3
+#define PASSWORD "1234"
 using namespace std;
 
 enum TypesHead { LOGO, WARNINGM, ERRORM, BALANCEM };
