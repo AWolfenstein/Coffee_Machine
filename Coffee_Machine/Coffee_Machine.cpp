@@ -22,7 +22,6 @@ using namespace std;
 
 double balanceNow = 0;
 double revenue = 0;
-//int inputPasswordTries = 2;
 
 void layuout(int type);
 void userButtonMenu(TypesMenu typeMenu, int& emptyCups, int& pinTries);
@@ -44,7 +43,7 @@ void makePaymentAndPrepeareEmptyCups(double price, int& emptyCups);
 void inputingCups();
 void inputingCups(int& emptyCups, int& pinTries);
 
-//void inputingPin();
+
 void inputingPin(int& emptyCups, int& pinTries);
 
 void block();
@@ -68,7 +67,7 @@ int main()
 	Window.hideSelection();
 	Window.setTitle(WINDOW_TITLE);
 	int emptyCups = START_CUPS;
-	int inputPasswordTries = INPUT_PINT_TRIES;
+	int inputPasswordTries = INPUT_PIN_TRIES;
 
 	layuout(LOGO);
 	testFunction();
@@ -302,7 +301,7 @@ void inputingCups(int& emptyCups, int& pinTries) {
 	ClearConsoleInputBuffer();
 	string input = inputKeybordString(6, 6, false, 10);
 	emptyCups += setEmptyCups(stoi(getNonEmptyString(input)));
-	pinTries = 2;
+	pinTries = INPUT_PIN_TRIES;
 	Cursor.setColor(BLACK, BLACK);
 	Keyboard.waitUser();
 	userButtonMenu(SERVICE, emptyCups, pinTries);
@@ -332,6 +331,10 @@ void inputingCups() {
 }
 
 void inputingPin(int& emptyCups, int& pinTries) {
+	if (pinTries == 0) {
+		userMessange("Coffee machine has been blocked", ERRORM);
+		block();
+	}
 	layuout(LOGO);
 	Cursor.setColor(BLACK, BLACK);
 	const int xStart = 13;
@@ -357,6 +360,7 @@ void inputingPin(int& emptyCups, int& pinTries) {
 	Cursor.setColor(BLACK, BLACK);
 	if (pinTries != 0) {
 		if (isCorrectPassword(pin, PASSWORD)) {
+			pinTries = INPUT_PIN_TRIES;
 			userButtonMenu(SERVICE, emptyCups, pinTries);
 		}
 		else {
@@ -365,12 +369,11 @@ void inputingPin(int& emptyCups, int& pinTries) {
 			ClearConsoleInputBuffer();
 			Keyboard.wait(70);
 			inputingPin(emptyCups, pinTries);
+
 		}
 	}
-	else {
-		userMessange("Coffee machine has been blocked", ERRORM);
-		block();
-	}
+
+
 }
 
 bool coinsInput() {
@@ -548,7 +551,7 @@ bool serviceInput(int& emptyCups, int& pinTries) {
 	bool firstButtonPressed = isPressedButton(firstButtonRow);
 	bool twoButtonPressed = isPressedButton(twoButtonRow);
 	bool threeButtonPressed = isPressedButton(threeButtonRow);
-	pinTries = 3;
+	pinTries = INPUT_PIN_TRIES;
 	if (firstButtonPressed || isKeybordPressed(1)) {
 		addingCups(emptyCups, pinTries);
 		return false;
@@ -560,7 +563,7 @@ bool serviceInput(int& emptyCups, int& pinTries) {
 	}
 
 	if (threeButtonPressed || isKeybordPressed(3)) {
-		userButtonMenu(COFFEE,emptyCups, pinTries);
+		userButtonMenu(COFFEE, emptyCups, pinTries);
 		return false;
 	}
 
