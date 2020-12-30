@@ -24,7 +24,7 @@ using namespace std;
 enum TypesHead { LOGO, WARNINGM, ERRORM, BALANCEM };
 enum TypesMenu { COFFEE, SERVICE, COINS };
 
-const string coffee[5] = { "Input Money", "Espresso", "Cappuccino",  "Latte", "Service" };
+const string coffee[5] = { "Deposit Money", "Espresso", "Cappuccino",  "Latte", "Service" };
 const string cash[5] = { "", "1", "1.50",  "1.50" ,"" };
 const string serviceButtons[3] = { "Add cups", "Revenue getting", "Back to Main Menu" };
 const string coinsButtons[6] = { " 10 Coins", " 20 Coins", " 50 Coins"," 1 BYN"," 2 BYN"," Back" };

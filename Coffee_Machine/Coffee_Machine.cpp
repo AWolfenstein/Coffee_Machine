@@ -49,7 +49,7 @@ void addingCups(int& emptyCups, int& pinTries, double& balanceNow, double& reven
 void addMoney(double coins, int& emptyCups, int& pinTries, double& balanceNow, double& revenue);
 void allBalanceService(double& revenue);
 void allCupsService(int& emptyCups);
-void balance(double byn);
+void balance(double& revenue);
 
 void resetBalance(int& emptyCups, int& pinTries, double& balanceNow, double& revenue);
 
@@ -86,7 +86,7 @@ void userButtonMenu(TypesMenu typeMenu, int& emptyCups, int& pinTries, double& b
 	bool isCoins = typeMenu == COINS;
 
 	if (isCoffee && emptyCups == 0) {
-		userMessange("We are very sorry, but unfortunately there are no cups left", ERRORM,revenue);
+		userMessange("We are very sorry but there are no cups left", ERRORM,revenue);
 		inputingPin(emptyCups, pinTries, balanceNow,revenue);
 	}
 
@@ -331,7 +331,7 @@ bool coinsInput(int& emptyCups, int& pinTries, double& balanceNow, double& reven
 	bool fourButtonPressed = isPressedButton(fourButtonRow);
 	bool fiveButtonPressed = isPressedButton(fiveButtonRow);
 	bool sixButtonPressed = isPressedButton(sixButtonRow);
-
+	
 	if (firstButtonPressed || isKeybordPressed(1)) {
 		addMoney(coins[0], emptyCups, pinTries, balanceNow,revenue);
 		return false;
@@ -376,7 +376,7 @@ bool coffeeInput(int& emptyCups, int& pinTries, double& balanceNow, double& reve
 	if (firstButtonPressed || isKeybordPressed(1)) {
 		cin.clear();
 		fflush(stdin);
-		userMessange("Pay attention that the coffee machine doesn't give change! ", WARNINGM,revenue);
+		userMessange("Please deposit coins. Pay attention that the coffee machine doesn’t give change ", WARNINGM,revenue);
 		userButtonMenu(COINS, emptyCups, pinTries, balanceNow,revenue);
 		return false;
 	}
@@ -470,7 +470,7 @@ void addingCups(int& emptyCups, int& pinTries, double& balanceNow, double& reven
 }
 
 
-void balance(double byn) {
+void balance(double& revenue) {
 	Cursor.setColor(GREEN);
 	printFrame(4, 4, 21, 1);
 	Cursor.setPosition(6, 5);
@@ -480,7 +480,7 @@ void balance(double byn) {
 	Cursor.setColor(LIGHTCYAN);
 	cout << fixed << showpoint;
 	cout << setprecision(2);
-	cout << byn;//BYN
+	cout << revenue;
 	Cursor.setPosition(22, 5);
 	Cursor.setColor(LIGHTYELLOW);
 	cout << "BYN";
@@ -538,7 +538,7 @@ void allCupsService(int& emptyCups) {
 
 void addMoney(double coins, int& emptyCups, int& pinTries, double& balanceNow,  double& revenue) {
 	balanceNow += setMoney(coins);
-	revenue += balanceNow;
+	revenue += setMoney(coins);
 	userButtonMenu(COINS, emptyCups, pinTries, balanceNow,revenue);
 }
 
