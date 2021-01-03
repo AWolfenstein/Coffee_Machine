@@ -81,7 +81,7 @@ void backButton() {
 	cout << 1;
 	Cursor.setColor(LIGHTYELLOW);
 	Cursor.setPosition(7, 24);
-	cout << "Back to Main Menu";
+	cout << serviceButtons[2];
 }
 void serviceMenuButton() {
 	Cursor.setColor(LIGHTMAGENTA);
@@ -93,7 +93,7 @@ void serviceMenuButton() {
 	cout << 5;
 	Cursor.setColor(LIGHTYELLOW);
 	Cursor.setPosition(7, 24);
-	cout << "Service";
+	cout << coffee[4];
 }
 void userButtons(const string str[], int size, bool isCash) {
 	for (int i = 0; i <= size; i++) {
@@ -130,7 +130,7 @@ void userButtons(const string str[], int size, bool isCash) {
 			cout << cash[i];
 			Cursor.setPosition(23, 9 + i * b);
 			Cursor.setColor(LIGHTYELLOW);
-			cout << "BYN";
+			cout << balanceMessage[1];
 		}
 	}
 }
