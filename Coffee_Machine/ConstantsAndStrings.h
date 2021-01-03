@@ -26,7 +26,8 @@ enum TypesMenu { COFFEE, SERVICE, COINS };
 
 const string coffee[5] = { "Deposit Money", "Espresso", "Cappuccino",  "Latte", "Service" };
 const string cash[5] = { "", "1", "1.50",  "1.50" ,"" };
-const string serviceButtons[3] = { "Add cups", "Revenue getting", "Back to Main Menu" };
+const string serviceButtons[3] = { "Add cups", "Withdrawal of proceeds,", "Back to Main Menu" };
+const string buttonBack[1] = { "Back to Main Menu" };
 const string coinsButtons[6] = { " 10 Coins", " 20 Coins", " 50 Coins"," 1 BYN"," 2 BYN"," Back" };
 const double coins[5] = { 0.10, 0.20, 0.50,1,2 };
 const int numPadKeys[10] = { VK_NUMPAD0,VK_NUMPAD1,VK_NUMPAD2,VK_NUMPAD3,VK_NUMPAD4,VK_NUMPAD5,VK_NUMPAD6,VK_NUMPAD7,VK_NUMPAD8,VK_NUMPAD9 };

@@ -20,7 +20,8 @@
 
 using namespace std;
 
-
+void backButton();
+void serviceMenuButton();
 
 
 void layuout(int type, double& revenue);
@@ -86,13 +87,15 @@ void userButtonMenu(TypesMenu typeMenu, int& emptyCups, int& pinTries, double& b
 	bool isCoins = typeMenu == COINS;
 
 	if (isCoffee && emptyCups == 0) {
-		userMessange("We are very sorry but there are no cups left", ERRORM,revenue);
-		inputingPin(emptyCups, pinTries, balanceNow,revenue);
+		userMessange("We are very sorry but there are no cups left", ERRORM, revenue);
+
+
+		//serviceMenuButton();
+		inputingPin(emptyCups, pinTries, balanceNow, revenue);
 	}
 
 	layuout(isService ? BALANCEM : LOGO, revenue);
 	bool chosen = true;
-	bool input = true;
 	isService ? allCupsService(emptyCups) : balance(balanceNow);
 
 	Cursor.setColor(YELLOW);
@@ -115,7 +118,7 @@ void userButtonMenu(TypesMenu typeMenu, int& emptyCups, int& pinTries, double& b
 }
 
 
-void headLogoT(int type, double&revenue) {
+void headLogoT(int type, double& revenue) {
 	Color colorFrame;
 	Color colorText;
 	string text;
@@ -163,7 +166,7 @@ void headLogoT(int type, double&revenue) {
 	}
 }
 
-void userMessange(string str, int type, double &revenue) {
+void userMessange(string str, int type, double& revenue) {
 	layuout(type, revenue);
 
 	Color color = type == ERRORM ? LIGHTRED : LIGHTYELLOW;
@@ -198,12 +201,10 @@ void block(double& revenue) {
 	layuout(LOGO, revenue);
 	Cursor.setColor(RED);
 	Cursor.setPosition(7, 7);
-	cout << "Coffee machine has ";
+	cout << "The machine";
 	Cursor.setPosition(9, 8);
-	cout << " been blocked";
-	Cursor.setPosition(12, 10);
-	Cursor.setColor(LIGHTCYAN);
-	cout << "Sorry!!";
+	cout << " is blocked";
+
 	while (!Keyboard.getPressed(VK_ESCAPE)) {
 		Keyboard.waitUser();
 		block(revenue);
@@ -213,14 +214,14 @@ void block(double& revenue) {
 
 
 void makingCoffee(int coffeeChoice, int& emptyCups, int& pinTries, double& balanceNow, double& revenue) {
-	layuout(LOGO,revenue);
+	layuout(LOGO, revenue);
 
 	int yLoader = 7;
 	double status = 0;
 
 	Cursor.setColor(RED);
 	Cursor.setPosition(6, 5);
-	cout << "Making " << coffee[coffeeChoice - 1];
+	cout << "Here is the best " << coffee[coffeeChoice - 1] << "in the city. Please help yourself!";
 
 	Cursor.printChar(3, yLoader, '[', WHITE);
 	Cursor.printChar(27, yLoader, ']', WHITE);
@@ -237,7 +238,7 @@ void makingCoffee(int coffeeChoice, int& emptyCups, int& pinTries, double& balan
 		Sleep(150);
 	}
 
-	layuout(LOGO,revenue);
+	layuout(LOGO, revenue);
 	Cursor.setColor(LIGHTYELLOW);
 	Cursor.setPosition(4, 7);
 	cout << "Your " << coffee[coffeeChoice - 1] << " is ready.";
@@ -250,11 +251,8 @@ void makingCoffee(int coffeeChoice, int& emptyCups, int& pinTries, double& balan
 	userButtonMenu(COFFEE, emptyCups, pinTries, balanceNow, revenue);
 }
 
-
-
-
 void inputingCups(int& emptyCups, int& pinTries, double& balanceNow, double& revenue) {
-	layuout(LOGO,revenue);
+	layuout(LOGO, revenue);
 
 	Cursor.setColor(BLACK, BLACK);
 	Cursor.setColor(GREEN);
@@ -262,7 +260,7 @@ void inputingCups(int& emptyCups, int& pinTries, double& balanceNow, double& rev
 
 	Cursor.setPosition(6, 5);
 	Cursor.setColor(WHITE);
-	cout << "Add empty cups: ";
+	cout << "How many cups are you adding? ";
 
 	Cursor.setColor(BLACK, WHITE);
 	for (int i = 6; i <= 24; i++)
@@ -272,6 +270,7 @@ void inputingCups(int& emptyCups, int& pinTries, double& balanceNow, double& rev
 	Cursor.setPosition(6, 6);
 	ClearConsoleInputBuffer();
 	string input = inputKeybordString(6, 6, false, 10);
+	emptyCups += setEmptyCups(stoi(input));
 	Cursor.setColor(BLACK, BLACK);
 	Keyboard.waitUser();
 	userButtonMenu(SERVICE, emptyCups, pinTries, balanceNow, revenue);
@@ -279,17 +278,17 @@ void inputingCups(int& emptyCups, int& pinTries, double& balanceNow, double& rev
 
 void inputingPin(int& emptyCups, int& pinTries, double& balanceNow, double& revenue) {
 	if (pinTries == 0) {
-		userMessange("Coffee machine has been blocked", ERRORM,revenue);
+		userMessange("Coffee machine has been blocked", ERRORM, revenue);
 		block(revenue);
 	}
-	layuout(LOGO,revenue);
+	layuout(LOGO, revenue);
 	Cursor.setColor(BLACK, BLACK);
 	const int xStart = 13;
 	const int yStart = 7;
 
 	Cursor.setColor(RED);
 	printFrame(4, 4, 21, 3);
-
+	backButton();
 	Cursor.setPosition(6, 5);
 	Cursor.setColor(WHITE);
 	cout << "Please input PIN: ";
@@ -301,24 +300,38 @@ void inputingPin(int& emptyCups, int& pinTries, double& balanceNow, double& reve
 	}
 
 	ClearConsoleInputBuffer();
+
 	Keyboard.wait(70);
+
 	string pin = inputKeybordString(xStart, yStart, true, 4);
 
 	Cursor.setColor(BLACK, BLACK);
+
 	if (pinTries != 0) {
 		if (isCorrectPassword(pin, PASSWORD)) {
 			pinTries = INPUT_PIN_TRIES;
-			userButtonMenu(SERVICE, emptyCups, pinTries, balanceNow,revenue);
+			userButtonMenu(SERVICE, emptyCups, pinTries, balanceNow, revenue);
 		}
 		else {
 			pinTries--;
-			userMessange("PIN is wrong! Left: " + to_string(pinTries), WARNINGM,revenue);
+			userMessange("PIN is wrong! Left: " + to_string(pinTries), WARNINGM, revenue);
 			ClearConsoleInputBuffer();
 			Keyboard.wait(70);
-			inputingPin(emptyCups, pinTries, balanceNow,revenue);
+			inputingPin(emptyCups, pinTries, balanceNow, revenue);
 
 		}
 	}
+	while (true)
+	{
+		bool backButtonPressed = isPressedButton(sixButtonRow);
+		if (backButtonPressed || isKeybordPressed(1)) {
+			userButtonMenu(COFFEE, emptyCups, pinTries, balanceNow, revenue);
+		}
+	}
+
+
+	///////////////Back button
+
 
 
 }
@@ -331,33 +344,34 @@ bool coinsInput(int& emptyCups, int& pinTries, double& balanceNow, double& reven
 	bool fourButtonPressed = isPressedButton(fourButtonRow);
 	bool fiveButtonPressed = isPressedButton(fiveButtonRow);
 	bool sixButtonPressed = isPressedButton(sixButtonRow);
-	
+
 	if (firstButtonPressed || isKeybordPressed(1)) {
-		addMoney(coins[0], emptyCups, pinTries, balanceNow,revenue);
+		addMoney(coins[0], emptyCups, pinTries, balanceNow, revenue);
+
 		return false;
 	}
 
 	if (twoButtonPressed || isKeybordPressed(2)) {
-		addMoney(coins[1], emptyCups, pinTries, balanceNow,revenue);
+		addMoney(coins[1], emptyCups, pinTries, balanceNow, revenue);
 		return false;
 	}
 
 	if (threeButtonPressed || isKeybordPressed(3)) {
-		addMoney(coins[2], emptyCups, pinTries, balanceNow,revenue);
+		addMoney(coins[2], emptyCups, pinTries, balanceNow, revenue);
 		return false;
 	}
 	if (fourButtonPressed || isKeybordPressed(4)) {
-		addMoney(coins[3], emptyCups, pinTries, balanceNow,revenue);
+		addMoney(coins[3], emptyCups, pinTries, balanceNow, revenue);
 		return false;
 	}
 
 	if (fiveButtonPressed || isKeybordPressed(5)) {
-		addMoney(coins[4], emptyCups, pinTries, balanceNow,revenue);
+		addMoney(coins[4], emptyCups, pinTries, balanceNow, revenue);
 		return false;
 	}
 
 	if (sixButtonPressed || isKeybordPressed(6)) {
-		userButtonMenu(COFFEE, emptyCups, pinTries, balanceNow,revenue);
+		userButtonMenu(COFFEE, emptyCups, pinTries, balanceNow, revenue);
 		return false;
 	}
 
@@ -376,21 +390,22 @@ bool coffeeInput(int& emptyCups, int& pinTries, double& balanceNow, double& reve
 	if (firstButtonPressed || isKeybordPressed(1)) {
 		cin.clear();
 		fflush(stdin);
-		userMessange("Please deposit coins. Pay attention that the coffee machine doesn’t give change ", WARNINGM,revenue);
-		userButtonMenu(COINS, emptyCups, pinTries, balanceNow,revenue);
+		userMessange("Please deposit coins. Pay attention that the coffee machine doesn’t give change ", WARNINGM, revenue);
+		userButtonMenu(COINS, emptyCups, pinTries, balanceNow, revenue);
 		return false;
 	}
 
 	if (twoButtonPressed || isKeybordPressed(2)) {
 		if (isPaid(balanceNow, stod(cash[1])))
 		{
-			makePaymentAndPrepeareEmptyCups(stod(cash[1]), emptyCups, pinTries, balanceNow,revenue);
-			makingCoffee(2, emptyCups, pinTries, balanceNow,revenue);
+			makePaymentAndPrepeareEmptyCups(stod(cash[1]), emptyCups, pinTries, balanceNow, revenue);
+			makingCoffee(2, emptyCups, pinTries, balanceNow, revenue);
 		}
 		else
 		{
-			userMessange(showDifference(balanceNow, stod(cash[2])), WARNINGM,revenue);
-			userButtonMenu(COINS, emptyCups, pinTries, balanceNow,revenue);
+			userMessange(showDifference(balanceNow, stod(cash[2])), WARNINGM, revenue);
+			userMessange("Please deposit coins. Pay attention that the coffee machine doesn’t give change ", WARNINGM, revenue);
+			userButtonMenu(COINS, emptyCups, pinTries, balanceNow, revenue);
 		}
 		return false;
 	}
@@ -398,13 +413,15 @@ bool coffeeInput(int& emptyCups, int& pinTries, double& balanceNow, double& reve
 	if (threeButtonPressed || isKeybordPressed(3)) {
 		if (isPaid(balanceNow, stod(cash[2])))
 		{
-			makePaymentAndPrepeareEmptyCups(stod(cash[2]), emptyCups, pinTries, balanceNow,revenue);
-			makingCoffee(3, emptyCups, pinTries, balanceNow,revenue);
+			makePaymentAndPrepeareEmptyCups(stod(cash[2]), emptyCups, pinTries, balanceNow, revenue);
+
+			makingCoffee(3, emptyCups, pinTries, balanceNow, revenue);
 		}
 		else
 		{
-			userMessange(showDifference(balanceNow, stod(cash[3])), WARNINGM,revenue);
-			userButtonMenu(COINS, emptyCups, pinTries, balanceNow,revenue);
+			userMessange(showDifference(balanceNow, stod(cash[3])), WARNINGM, revenue);
+			userMessange("Please deposit coins. Pay attention that the coffee machine doesn’t give change ", WARNINGM, revenue);
+			userButtonMenu(COINS, emptyCups, pinTries, balanceNow, revenue);
 		}
 		return false;
 	}
@@ -412,41 +429,42 @@ bool coffeeInput(int& emptyCups, int& pinTries, double& balanceNow, double& reve
 		if (isPaid(balanceNow, stod(cash[3])))
 		{
 			makePaymentAndPrepeareEmptyCups(stod(cash[3]), emptyCups, pinTries, balanceNow, revenue);
-			makingCoffee(4, emptyCups, pinTries, balanceNow,revenue);
+			makingCoffee(4, emptyCups, pinTries, balanceNow, revenue);
 		}
 		else
 		{
-			userMessange(showDifference(balanceNow, stod(cash[3])), WARNINGM,revenue);
-			userButtonMenu(COINS, emptyCups, pinTries, balanceNow,revenue);
+			userMessange(showDifference(balanceNow, stod(cash[3])), WARNINGM, revenue);
+			userMessange("Please deposit coins. Pay attention that the coffee machine doesn’t give change ", WARNINGM, revenue);
+			userButtonMenu(COINS, emptyCups, pinTries, balanceNow, revenue);
 		}
 		return false;
 	}
 
 	if (fiveButtonPressed || isKeybordPressed(5)) {
-		inputingPin(emptyCups, pinTries, balanceNow,revenue);
+		inputingPin(emptyCups, pinTries, balanceNow, revenue);
 		return false;
 	}
 
 	return true;
 }
 
-bool serviceInput(int& emptyCups, int& pinTries, double& balanceNow,  double& revenue) {
+bool serviceInput(int& emptyCups, int& pinTries, double& balanceNow, double& revenue) {
 	bool firstButtonPressed = isPressedButton(firstButtonRow);
 	bool twoButtonPressed = isPressedButton(twoButtonRow);
 	bool threeButtonPressed = isPressedButton(threeButtonRow);
 	pinTries = INPUT_PIN_TRIES;
 	if (firstButtonPressed || isKeybordPressed(1)) {
-		addingCups(emptyCups, pinTries, balanceNow,revenue);
+		addingCups(emptyCups, pinTries, balanceNow, revenue);
 		return false;
 	}
 
 	if (twoButtonPressed || isKeybordPressed(2)) {
-		resetBalance(emptyCups, pinTries, balanceNow,revenue);
+		resetBalance(emptyCups, pinTries, balanceNow, revenue);
 		return false;
 	}
 
 	if (threeButtonPressed || isKeybordPressed(3)) {
-		userButtonMenu(COFFEE, emptyCups, pinTries, balanceNow,revenue);
+		userButtonMenu(COFFEE, emptyCups, pinTries, balanceNow, revenue);
 		return false;
 	}
 
@@ -455,8 +473,8 @@ bool serviceInput(int& emptyCups, int& pinTries, double& balanceNow,  double& re
 
 
 void addingCups(int& emptyCups, int& pinTries, double& balanceNow, double& revenue) {
-	layuout(LOGO,revenue);
-	inputingCups(emptyCups, pinTries, balanceNow,revenue);
+	layuout(LOGO, revenue);
+	inputingCups(emptyCups, pinTries, balanceNow, revenue);
 	Cursor.setColor(LIGHTYELLOW);
 	Cursor.setPosition(6, 7);
 	cout << emptyCups;
@@ -466,7 +484,7 @@ void addingCups(int& emptyCups, int& pinTries, double& balanceNow, double& reven
 	Cursor.setPosition(8, 12);
 	cout << "to Service Menu";
 	Keyboard.waitUser();
-	userButtonMenu(SERVICE, emptyCups, pinTries, balanceNow,revenue);
+	userButtonMenu(SERVICE, emptyCups, pinTries, balanceNow, revenue);
 }
 
 
@@ -486,28 +504,20 @@ void balance(double& revenue) {
 	cout << "BYN";
 }
 
-void resetBalance(int& emptyCups, int& pinTries, double& balanceNow,  double& revenue) {
-	layuout(LOGO,revenue);
+void resetBalance(int& emptyCups, int& pinTries, double& balanceNow, double& revenue) {
+	layuout(LOGO, revenue);
 	Cursor.setColor(LIGHTYELLOW);
 	Cursor.setPosition(7, 7);
-	cout << "Your revenue was ";
+	cout << setprecision(2);
+	cout << "Preeceds " << revenue << " BYN";
 	Cursor.setPosition(7, 9);
 	Cursor.setColor(LIGHTCYAN);
 	cout << fixed << showpoint;
-	cout << setprecision(2);
-	cout << revenue; ///////////
-	Cursor.setColor(LIGHTYELLOW);
-	Cursor.setPosition(16, 9);
-	cout << "BYN";
-	Cursor.setColor(RED);
-	Cursor.setPosition(4, 11);
-	cout << "Press any key to return";
-	Cursor.setPosition(8, 12);
-	cout << "to Service Menu";
+	cout << "were given away!";
 	Keyboard.waitUser();
 	balanceNow = 0;
 	revenue = 0;
-	userButtonMenu(SERVICE, emptyCups, pinTries, balanceNow,revenue);
+	userButtonMenu(SERVICE, emptyCups, pinTries, balanceNow, revenue);
 }
 
 void allBalanceService(double& revenue) {
@@ -536,10 +546,10 @@ void allCupsService(int& emptyCups) {
 	cout << "cups loaded.";
 }
 
-void addMoney(double coins, int& emptyCups, int& pinTries, double& balanceNow,  double& revenue) {
+void addMoney(double coins, int& emptyCups, int& pinTries, double& balanceNow, double& revenue) {
 	balanceNow += setMoney(coins);
 	revenue += setMoney(coins);
-	userButtonMenu(COINS, emptyCups, pinTries, balanceNow,revenue);
+	userButtonMenu(COFFEE, emptyCups, pinTries, balanceNow, revenue);
 }
 
 void makePaymentAndPrepeareEmptyCups(double price, int& emptyCups, int& pinTries, double& balanceNow, double& revenue) {
