@@ -22,16 +22,17 @@
 using namespace std;
 
 enum TypesHead { LOGO, WARNINGM, ERRORM, BALANCEM };
-enum TypesMenu { COFFEE, SERVICE, COINS };
+enum TypesMenu { COFFEE, SERVICE, COINS, SUBSERVICE };
 
 const string coffee[6] = { "Deposit Money", "Espresso", "Cappuccino",  "Latte", "Service","Binacci" };
 const string cash[5] = { "", "1", "1.50",  "1.50" ,"" };
 const string warning[2] = { "Warning!","Error!" };
 const string blockMachineMessage[3] = { "The machine" ," is blocked","Coffee machine has been blocked" };
 const string bestCoffeeMessage[2] = { "Here is the best " ,"in the city. Please help yourself!" };
+const string choiceService[2] = { "Input PIN " ,"Back to Main Menu" };
 const string readyCoffeeMessage[2] = { "Your " , " is ready." };
 const string serviceButtons[3] = { "Add cups", "Revenue getting", "Back to Main Menu" };
-const string buttonBack[2] = { "Back to Main Menu" ,"to Service Menu"};
+const string buttonBack[2] = { "Back to Main Menu" ,"to Service Menu" };
 const string coinsButtons[6] = { " 10 Coins", " 20 Coins", " 50 Coins"," 1 BYN"," 2 BYN"," Back" };
 const string emptyCupsMessage = "We are very sorry but there are no cups left";
 const string continueMessage = "Press any key to continue";
@@ -39,6 +40,8 @@ const string getCupMessage[4] = { "Please get a cup!","How many cups are you add
 const string pinMessage[2] = { "Please input PIN: ","PIN is wrong! Left: " };
 const string depositMoneyMessage = "Please deposit coins.Pay attention that the coffee machine doesnot give change ";
 const string balanceMessage[4] = { "Preeceds " ,"BYN", "were given away!","Balance " };
+const string yourChoice = "Your choice: ";
+
 const double coins[5] = { 0.10, 0.20, 0.50,1,2 };
 const int numPadKeys[10] = { VK_NUMPAD0,VK_NUMPAD1,VK_NUMPAD2,VK_NUMPAD3,VK_NUMPAD4,VK_NUMPAD5,VK_NUMPAD6,VK_NUMPAD7,VK_NUMPAD8,VK_NUMPAD9 };
 const int minButtonCol = 5;

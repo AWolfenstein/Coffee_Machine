@@ -13,4 +13,3 @@ void userButtonMenu(TypesMenu typeMenu);
 
 bool isPressedButton(const int buttonRow);
 bool isKeybordPressed(int Key);
-void backButton();

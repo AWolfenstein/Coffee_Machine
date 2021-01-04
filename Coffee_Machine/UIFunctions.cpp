@@ -71,30 +71,7 @@ void ClearConsoleInputBuffer()
 	ReadConsoleInput(GetStdHandle(STD_INPUT_HANDLE), ClearingVar1, 256, &ClearingVar2);
 	delete[] ClearingVar1;
 }
-void backButton() {
-	Cursor.setColor(LIGHTMAGENTA);
-	printFrame(4, 23, 21, 1);
-	printVerticalLine(6, 23);
 
-	Cursor.setColor(GRAY);
-	Cursor.setPosition(5, 24);
-	cout << 1;
-	Cursor.setColor(LIGHTYELLOW);
-	Cursor.setPosition(7, 24);
-	cout << serviceButtons[2];
-}
-void serviceMenuButton() {
-	Cursor.setColor(LIGHTMAGENTA);
-	printFrame(4, 23, 21, 1);
-	printVerticalLine(6, 23);
-
-	Cursor.setColor(GRAY);
-	Cursor.setPosition(5, 24);
-	cout << 5;
-	Cursor.setColor(LIGHTYELLOW);
-	Cursor.setPosition(7, 24);
-	cout << coffee[4];
-}
 void userButtons(const string str[], int size, bool isCash) {
 	for (int i = 0; i <= size; i++) {
 		int b = 1;
@@ -134,7 +111,6 @@ void userButtons(const string str[], int size, bool isCash) {
 		}
 	}
 }
-
 
 bool isPressedButton(const int buttonRow) {
 	bool borderMouse = Mouse.getColumns() >= minButtonCol && Mouse.getColumns() <= maxButtonCol;
