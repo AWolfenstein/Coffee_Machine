@@ -56,6 +56,7 @@ int main()
 	Window.hideScrollbars();
 	Window.hideSelection();
 	Window.setTitle(WINDOW_TITLE);
+
 	int emptyCups = START_CUPS;
 	int inputPasswordTries = INPUT_PIN_TRIES;
 	double balanceNow = 0;
@@ -191,6 +192,7 @@ void userMessange(string str, int type, double& revenue) {
 	}
 	Cursor.setColor(LIGHTGREEN);
 	Cursor.setPosition(3, 20);
+
 	cout << continueMessage;
 	Keyboard.waitUser();
 }
@@ -211,12 +213,18 @@ void block(double& revenue) {
 void makingCoffee(int coffeeChoice, int& emptyCups, int& pinTries, double& balanceNow, double& revenue) {
 	layuout(LOGO, revenue);
 
-	int yLoader = 7;
+	int yLoader = 11;
 	double status = 0;
 
 	Cursor.setColor(RED);
-	Cursor.setPosition(6, 5);
-	cout << bestCoffeeMessage[0] << coffee[coffeeChoice - 1] << bestCoffeeMessage[1];
+	Cursor.setPosition(4, 5);
+	cout << bestCoffeeMessage[0];
+	Cursor.setPosition(4, 6);
+	cout << coffee[coffeeChoice - 1] << bestCoffeeMessage[1];
+	Cursor.setPosition(4, 7);
+	cout << bestCoffeeMessage[2];
+
+
 
 	Cursor.printChar(3, yLoader, '[', WHITE);
 	Cursor.printChar(27, yLoader, ']', WHITE);
@@ -235,7 +243,7 @@ void makingCoffee(int coffeeChoice, int& emptyCups, int& pinTries, double& balan
 
 	layuout(LOGO, revenue);
 	Cursor.setColor(LIGHTYELLOW);
-	Cursor.setPosition(4, 7);
+	Cursor.setPosition(3, 7);
 	cout << readyCoffeeMessage[0] << coffee[coffeeChoice - 1] << readyCoffeeMessage[1];
 
 	Cursor.setColor(RED);
@@ -251,21 +259,23 @@ void inputingCups(int& emptyCups, int& pinTries, double& balanceNow, double& rev
 
 	Cursor.setColor(BLACK, BLACK);
 	Cursor.setColor(GREEN);
-	printFrame(4, 4, 21, 2);
+	printFrame(4, 4, 21, 5);
 
 	Cursor.setPosition(6, 5);
 	Cursor.setColor(WHITE);
 	cout << getCupMessage[1];
+	Cursor.setPosition(6, 6);
+	cout << getCupMessage[4];
 
 	Cursor.setColor(BLACK, WHITE);
 	for (int i = 6; i <= 24; i++)
 	{
-		Cursor.printBlank(i, 6);
+		Cursor.printBlank(i,8);
 	}
 
-	Cursor.setPosition(6, 6);
+	Cursor.setPosition(6, 8);
 	ClearConsoleInputBuffer();
-	string input = inputKeybordString(6, 6, false, 10);
+	string input = inputKeybordString(6, 8, false, 10);
 	emptyCups += setEmptyCups(stoi(input));
 	Cursor.setColor(BLACK, BLACK);
 	Keyboard.waitUser();
@@ -368,7 +378,7 @@ bool coffeeInput(int& emptyCups, int& pinTries, double& balanceNow, double& reve
 		userButtonMenu(COINS, emptyCups, pinTries, balanceNow, revenue);
 		return false;
 	}
-
+	cout << setprecision(2);
 	if (twoButtonPressed || isKeybordPressed(2)) {
 		if (isPaid(balanceNow, stod(cash[1])))
 		{
@@ -486,7 +496,7 @@ void balance(double& revenue) {
 	Cursor.setColor(LIGHTCYAN);
 	cout << fixed << showpoint;
 	cout << setprecision(2);
-	cout << revenue;
+	cout << revenue<<" ";
 	Cursor.setPosition(22, 5);
 	Cursor.setColor(LIGHTYELLOW);
 	cout << balanceMessage[1];
@@ -498,7 +508,7 @@ void resetBalance(int& emptyCups, int& pinTries, double& balanceNow, double& rev
 	Cursor.setPosition(7, 7);
 	cout << balanceMessage[3];
 	cout << setprecision(2);
-	cout << revenue << balanceMessage[1];
+	cout << revenue <<" " <<balanceMessage[1];
 	Cursor.setPosition(7, 9);
 	Cursor.setColor(LIGHTCYAN);
 	cout << fixed << showpoint;
