@@ -38,9 +38,11 @@ void printFrame(int x, int y, int columns, int rows)
 }
 
 string inputKeybordString(int xStart, int yStart, bool isPin, int size) {
+
 	int input = 0;
 	char sym;
 	string str = "";
+
 	Keyboard.wait(30);
 	while (!Keyboard.getPressed(VK_RETURN)) {
 
@@ -73,6 +75,7 @@ void ClearConsoleInputBuffer()
 }
 
 void userButtons(const string str[], int size, bool isCash) {
+
 	for (int i = 0; i <= size; i++) {
 		int b = 1;
 		int space = 0;
@@ -94,9 +97,12 @@ void userButtons(const string str[], int size, bool isCash) {
 
 		Cursor.setColor(GRAY);
 		Cursor.setPosition(5, 9 + i * b);
+
 		cout << i + 1;
+
 		Cursor.setColor(LIGHTYELLOW);
 		Cursor.setPosition(7, 9 + i * b);
+
 		cout << str[i];
 
 		if (isCash && i != 0 && i != size) {
@@ -104,9 +110,12 @@ void userButtons(const string str[], int size, bool isCash) {
 			printVerticalLine(17, 8 + i * b);
 			Cursor.setColor(LIGHTCYAN);
 			Cursor.setPosition(18 + space, 9 + i * b);
+
 			cout << cash[i];
+
 			Cursor.setPosition(23, 9 + i * b);
 			Cursor.setColor(LIGHTYELLOW);
+
 			cout << balanceMessage[1];
 		}
 	}
