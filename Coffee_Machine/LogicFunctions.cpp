@@ -11,7 +11,7 @@ int decreaseCupFromCoffeeMachine(int emptyCups) {
 }
 
 double setMoney(double inputMoney) {
-		return inputMoney;
+	return inputMoney;
 }
 
 bool isPaid(double currentBalance, double coffeePrice) {
@@ -40,7 +40,7 @@ string showDifference(double currentBalance, double price) {
 	string warningMessageString = "Please deposit ";
 	string differrence = to_string(getPriceDifference(currentBalance, price));
 	string resultString = "Please deposit " + differrence + " BYR";
-	
+
 	return resultString;
 }
 
@@ -51,4 +51,9 @@ string getNonEmptyString(string str) {
 	else {
 		return str;
 	}
+}
+
+void makePaymentAndPrepeareEmptyCups(double price, int& emptyCups, int& pinTries, double& balanceNow, double& revenue) {
+	balanceNow -= price;
+	emptyCups = decreaseCupFromCoffeeMachine(emptyCups);
 }

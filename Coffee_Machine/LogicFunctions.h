@@ -11,3 +11,4 @@ bool isPaid(double currentBalance, double coffeePrice);
 bool isCorrectPassword(string inputPass, string pin);
 string showDifference(double currentBalance, double price);
 string getNonEmptyString(string str);
+void makePaymentAndPrepeareEmptyCups(double price, int& emptyCups, int& pinTries, double& balanceNow, double& revenue);
