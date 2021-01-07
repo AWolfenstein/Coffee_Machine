@@ -276,7 +276,7 @@ bool coffeeInput(int& emptyCups, int& pinTries, double& balanceNow, double& reve
 		}
 		else
 		{
-			userMessange(showDifference(balanceNow, stod(cash[2])), WARNINGM, revenue);
+			userMessange(showDifference(balanceNow, stod(cash[1])), WARNINGM, revenue);
 			userMessange(depositMoneyMessage, WARNINGM, revenue);
 			userButtonMenu(COINS, emptyCups, pinTries, balanceNow, revenue);
 		}
@@ -291,7 +291,7 @@ bool coffeeInput(int& emptyCups, int& pinTries, double& balanceNow, double& reve
 		}
 		else
 		{
-			userMessange(showDifference(balanceNow, stod(cash[3])), WARNINGM, revenue);
+			userMessange(showDifference(balanceNow, stod(cash[2])), WARNINGM, revenue);
 			userMessange(depositMoneyMessage, WARNINGM, revenue);
 			userButtonMenu(COINS, emptyCups, pinTries, balanceNow, revenue);
 		}
@@ -388,8 +388,10 @@ void resetBalance(int& emptyCups, int& pinTries, double& balanceNow, double& rev
 	cout << fixed << showpoint;
 	cout << balanceMessage[2];
 	Keyboard.waitUser();
+
 	balanceNow = 0;
 	revenue = 0;
+
 	userButtonMenu(SERVICE, emptyCups, pinTries, balanceNow, revenue);
 }
 
