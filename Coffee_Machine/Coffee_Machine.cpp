@@ -166,7 +166,7 @@ void inputingCups(int& emptyCups, int& pinTries, double& balanceNow, double& rev
 	string input = inputKeybordString(6, 8, false, 10);
 	emptyCups += setEmptyCups(stoi(input));
 	Cursor.setColor(BLACK, BLACK);
-	Keyboard.waitUser();
+	//Keyboard.waitUser();
 	userButtonMenu(SERVICE, emptyCups, pinTries, balanceNow, revenue);
 }
 
