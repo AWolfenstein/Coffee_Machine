@@ -21,4 +21,4 @@ string getNonEmptyString(string str);
 
 void makePaymentAndPrepeareEmptyCups(double price, int& emptyCups, int& pinTries, double& balanceNow, double& revenue);
 
-string setPrecision(string str);
+string setPercision(string differencePrice);
